@@ -101,38 +101,38 @@ static const char *get_enemy_name(const char *string)
 	return "";
 }
 
-static int print_byte(FILE *fp, char *data, unsigned *pos, char *name)
+static int print_byte(FILE *fp, char **data, char *name)
 {
-	char i = data[*pos];
-	*pos += 1;
+	char i = **data;
+	*data += 1;
 	fprintf(fp, "%s:i8 = %d\n", name, i);
 	return i;
 }
 
-static int print_short(FILE *fp, char *data, unsigned *pos, char *name)
+static int print_short(FILE *fp, char **data, char *name)
 {
 	short i;
-	memcpy(&i, data + *pos, 2);
-	*pos += 2;
+	memcpy(&i, *data, 2);
+	*data += 2;
 	fprintf(fp, "%s:i16 = %d\n", name, i);
 	return i;
 }
 
-static int print_int(FILE *fp, char *data, unsigned *pos, char *name)
+static int print_int(FILE *fp, char **data, char *name)
 {
 	int i;
-	memcpy(&i, data + *pos, 4);
-	*pos += 4;
+	memcpy(&i, *data, 4);
+	*data += 4;
 	fprintf(fp, "%s:i32 = %d\n", name, i);
 	return i;
 }
 
-static float print_float(FILE *fp, char *data, unsigned *pos, char *name)
+static float print_float(FILE *fp, char **data, char *name)
 {
 	char str[64];
 	float f;
-	memcpy(&f, data + *pos, 4);
-	*pos += 4;
+	memcpy(&f, *data, 4);
+	*data += 4;
 
 	for (unsigned i = 1; i < 42; i++)
 	{
@@ -145,247 +145,247 @@ static float print_float(FILE *fp, char *data, unsigned *pos, char *name)
 	return f;
 }
 
-static char *print_string(FILE *fp, char *data, unsigned *pos, char *name)
+static char *print_string(FILE *fp, char **data, char *name)
 {
-	char *s = data + *pos;
-	*pos += strlen(s) + 1;
+	char *s = *data;
+	*data += strlen(s) + 1;
 	fprintf(fp, "%s:str = %s\n", name, s);
 	return s;
 }
 
-static char *print_model(FILE *fp, char *data, unsigned *pos, char *name)
+static char *print_model(FILE *fp, char **data, char *name)
 {
-	char *s = data + *pos;
-	*pos += strlen(s) + 1;
+	char *s = *data;
+	*data += strlen(s) + 1;
 	fprintf(fp, "%s:str = %s%s\n", name, s, get_enemy_name(s));
 	return s;
 }
 
-static int print_index(FILE *fp, char *data, unsigned *pos)
+static int print_index(FILE *fp, char **data)
 {
 	int i;
-	memcpy(&i, data + *pos, 4);
-	*pos += 4;
+	memcpy(&i, *data, 4);
+	*data += 4;
 	fprintf(fp, "\n[ENTRY%04u]\n", i);
 	return i;
 }
 
-static void print_array(FILE *fp, char *data, unsigned *pos, char *name, unsigned n)
+static void print_array(FILE *fp, char **data, char *name, unsigned n)
 {
 	for (unsigned i = 0; i < n; i++)
 	{
 		short v;
-		memcpy(&v, data + *pos, 2);
-		*pos += 2;
+		memcpy(&v, *data, 2);
+		*data += 2;
 		fprintf(fp, "%s[%u]:i16 = %d\n", name, i, v);
 	}
 }
 
-static void print_common(FILE *fp, char *data, unsigned *pos)
+static void print_common(FILE *fp, char **data)
 {
-	print_byte  (fp, data, pos, "u01");
-	print_float (fp, data, pos, "u02");
-	print_byte  (fp, data, pos, "u03");
-	print_float (fp, data, pos, "u04");
-	print_byte  (fp, data, pos, "u05");
-	print_float (fp, data, pos, "u06");
-	print_byte  (fp, data, pos, "u07");
-	print_float (fp, data, pos, "u08");
-	print_byte  (fp, data, pos, "u09");
-	print_float (fp, data, pos, "u10");
+	print_byte  (fp, data, "u01");
+	print_float (fp, data, "u02");
+	print_byte  (fp, data, "u03");
+	print_float (fp, data, "u04");
+	print_byte  (fp, data, "u05");
+	print_float (fp, data, "u06");
+	print_byte  (fp, data, "u07");
+	print_float (fp, data, "u08");
+	print_byte  (fp, data, "u09");
+	print_float (fp, data, "u10");
 
-	print_int   (fp, data, pos, "u11");
-	print_int   (fp, data, pos, "u12");
-	print_byte  (fp, data, pos, "u11");
-	print_byte  (fp, data, pos, "u12");
-	print_byte  (fp, data, pos, "u11");
-	print_int   (fp, data, pos, "u12");
+	print_int   (fp, data, "u11");
+	print_int   (fp, data, "u12");
+	print_byte  (fp, data, "u11");
+	print_byte  (fp, data, "u12");
+	print_byte  (fp, data, "u11");
+	print_int   (fp, data, "u12");
 
-	print_model (fp, data, pos, "Model");
+	print_model (fp, data, "Model");
 
-	print_int   (fp, data, pos, "u14");
-	print_float (fp, data, pos, "PositionX");
-	print_float (fp, data, pos, "PositionY");
-	print_float (fp, data, pos, "PositionZ");
-	print_float (fp, data, pos, "RotationX");
-	print_float (fp, data, pos, "RotationY");
-	print_float (fp, data, pos, "RotationZ");
-	print_float (fp, data, pos, "ScaleX");
-	print_float (fp, data, pos, "ScaleY");
-	print_float (fp, data, pos, "ScaleZ");
-	print_float (fp, data, pos, "u24");
-	print_byte  (fp, data, pos, "u25");
+	print_int   (fp, data, "u14");
+	print_float (fp, data, "PositionX");
+	print_float (fp, data, "PositionY");
+	print_float (fp, data, "PositionZ");
+	print_float (fp, data, "RotationX");
+	print_float (fp, data, "RotationY");
+	print_float (fp, data, "RotationZ");
+	print_float (fp, data, "ScaleX");
+	print_float (fp, data, "ScaleY");
+	print_float (fp, data, "ScaleZ");
+	print_float (fp, data, "u24");
+	print_byte  (fp, data, "u25");
 }
 
-static void print_enemy(FILE *fp, char *data, unsigned *pos)
+static void print_enemy(FILE *fp, char **data)
 {
-	print_int   (fp, data, pos, "e01");
-	print_byte  (fp, data, pos, "e02");
-	print_int   (fp, data, pos, "e03");
-	print_byte  (fp, data, pos, "e04");
-	print_byte  (fp, data, pos, "e05");
-	print_int   (fp, data, pos, "e06");
-	print_int   (fp, data, pos, "e07");
-	print_int   (fp, data, pos, "e08");
-	print_byte  (fp, data, pos, "e09");
-	print_byte  (fp, data, pos, "e10");
-	print_byte  (fp, data, pos, "e11");
-	print_int   (fp, data, pos, "e12");
-	print_string(fp, data, pos, "e13");
-	print_byte  (fp, data, pos, "e14");
-	print_float (fp, data, pos, "e15");
-	print_int   (fp, data, pos, "e16");
+	print_int   (fp, data, "e01");
+	print_byte  (fp, data, "e02");
+	print_int   (fp, data, "e03");
+	print_byte  (fp, data, "e04");
+	print_byte  (fp, data, "e05");
+	print_int   (fp, data, "e06");
+	print_int   (fp, data, "e07");
+	print_int   (fp, data, "e08");
+	print_byte  (fp, data, "e09");
+	print_byte  (fp, data, "e10");
+	print_byte  (fp, data, "e11");
+	print_int   (fp, data, "e12");
+	print_string(fp, data, "e13");
+	print_byte  (fp, data, "e14");
+	print_float (fp, data, "e15");
+	print_int   (fp, data, "e16");
 
-	print_common(fp, data, pos);
+	print_common(fp, data);
 }
 
-static void print_target(FILE *fp, char *data, unsigned *pos)
+static void print_target(FILE *fp, char **data)
 {
-	int n = print_int(fp, data, pos, "t01");
+	int n = print_int(fp, data, "t01");
 	if (n == 0) return;
-	char *str = print_string(fp, data, pos, "t02");
+	char *str = print_string(fp, data, "t02");
 
 	if (strcmp(str, "cAISensorTargetStageAction") == 0)
 	{
-		print_int   (fp, data, pos, "t03a");
-		print_int   (fp, data, pos, "t04a");
-		print_int   (fp, data, pos, "t05a");
-		print_float (fp, data, pos, "t06a");
-		print_int   (fp, data, pos, "t07a");
-		print_byte  (fp, data, pos, "t08a");
-		print_short (fp, data, pos, "t09a");
-		print_byte  (fp, data, pos, "t10a");
-		n = print_int(fp, data, pos, "t11a");
-		print_array (fp, data, pos, "t12a", n);
-		n = print_int(fp, data, pos, "t13a");
-		print_array (fp, data, pos, "t14a", n);
-		print_int   (fp, data, pos, "t15a");
-		print_int   (fp, data, pos, "t16a");
-		print_int   (fp, data, pos, "t17a");
-		print_float (fp, data, pos, "t18a");
-		print_float (fp, data, pos, "t19a");
-		print_float (fp, data, pos, "t20a");
-		print_float (fp, data, pos, "t21a");
-		print_int   (fp, data, pos, "t22a");
-		print_float (fp, data, pos, "t23a");
-		print_float (fp, data, pos, "t24a");
-		print_int   (fp, data, pos, "t25a");
-		print_int   (fp, data, pos, "t26a");
-		print_int   (fp, data, pos, "t27a");
-		print_int   (fp, data, pos, "t28a");
+		print_int   (fp, data, "t03a");
+		print_int   (fp, data, "t04a");
+		print_int   (fp, data, "t05a");
+		print_float (fp, data, "t06a");
+		print_int   (fp, data, "t07a");
+		print_byte  (fp, data, "t08a");
+		print_short (fp, data, "t09a");
+		print_byte  (fp, data, "t10a");
+		n = print_int(fp, data, "t11a");
+		print_array (fp, data, "t12a", n);
+		n = print_int(fp, data, "t13a");
+		print_array (fp, data, "t14a", n);
+		print_int   (fp, data, "t15a");
+		print_int   (fp, data, "t16a");
+		print_int   (fp, data, "t17a");
+		print_float (fp, data, "t18a");
+		print_float (fp, data, "t19a");
+		print_float (fp, data, "t20a");
+		print_float (fp, data, "t21a");
+		print_int   (fp, data, "t22a");
+		print_float (fp, data, "t23a");
+		print_float (fp, data, "t24a");
+		print_int   (fp, data, "t25a");
+		print_int   (fp, data, "t26a");
+		print_int   (fp, data, "t27a");
+		print_int   (fp, data, "t28a");
 	}
 	else if (strcmp(str, "cAISensorTargetGeneralPoint") == 0)
 	{
-		print_int   (fp, data, pos, "t03b");
-		print_int   (fp, data, pos, "t04b");
-		print_int   (fp, data, pos, "t05b");
-		print_byte  (fp, data, pos, "t06b");
-		print_int   (fp, data, pos, "t07b");
-		print_int   (fp, data, pos, "t08b");
-		print_int   (fp, data, pos, "t09b");
-		print_float (fp, data, pos, "t10b");
-		print_float (fp, data, pos, "t11b");
-		print_float (fp, data, pos, "t12b");
-		print_int   (fp, data, pos, "t13b");
-		print_int   (fp, data, pos, "t14b");
-		print_int   (fp, data, pos, "t15b");
-		print_float (fp, data, pos, "t16b");
-		print_float (fp, data, pos, "t17b");
-		print_float (fp, data, pos, "t18b");
-		print_int   (fp, data, pos, "t19b");
-		print_int   (fp, data, pos, "t20b");
-		print_float (fp, data, pos, "t21b");
-		print_float (fp, data, pos, "t22b");
-		print_int   (fp, data, pos, "t23b");
-		print_int   (fp, data, pos, "t24b");
-		print_int   (fp, data, pos, "t25b");
-		print_int   (fp, data, pos, "t26b");
+		print_int   (fp, data, "t03b");
+		print_int   (fp, data, "t04b");
+		print_int   (fp, data, "t05b");
+		print_byte  (fp, data, "t06b");
+		print_int   (fp, data, "t07b");
+		print_int   (fp, data, "t08b");
+		print_int   (fp, data, "t09b");
+		print_float (fp, data, "t10b");
+		print_float (fp, data, "t11b");
+		print_float (fp, data, "t12b");
+		print_int   (fp, data, "t13b");
+		print_int   (fp, data, "t14b");
+		print_int   (fp, data, "t15b");
+		print_float (fp, data, "t16b");
+		print_float (fp, data, "t17b");
+		print_float (fp, data, "t18b");
+		print_int   (fp, data, "t19b");
+		print_int   (fp, data, "t20b");
+		print_float (fp, data, "t21b");
+		print_float (fp, data, "t22b");
+		print_int   (fp, data, "t23b");
+		print_int   (fp, data, "t24b");
+		print_int   (fp, data, "t25b");
+		print_int   (fp, data, "t26b");
 	}
 	else if (strcmp(str, "cAISensorTargetNpc") == 0)
 	{
-		print_byte  (fp, data, pos, "t03c");
-		print_int   (fp, data, pos, "t04c");
-		print_int   (fp, data, pos, "t05c");
-		print_float (fp, data, pos, "t06c");
-		print_byte  (fp, data, pos, "t07c");
-		print_byte  (fp, data, pos, "t08c");
-		print_byte  (fp, data, pos, "t09c");
-		print_int   (fp, data, pos, "t10c");
-		print_int   (fp, data, pos, "t11c");
-		print_byte  (fp, data, pos, "t12c");
-		print_int   (fp, data, pos, "t13c");
-		print_int   (fp, data, pos, "t14c");
-		print_float (fp, data, pos, "t15c");
-		print_int   (fp, data, pos, "t16c");
-		print_int   (fp, data, pos, "t17c");
-		print_int   (fp, data, pos, "t18c");
-		print_int   (fp, data, pos, "t19c");
-		print_float (fp, data, pos, "t20c");
-		print_float (fp, data, pos, "t21c");
-		print_float (fp, data, pos, "t22c");
-		print_float (fp, data, pos, "t23c");
-		print_float (fp, data, pos, "t24c");
-		print_float (fp, data, pos, "t25c");
-		print_float (fp, data, pos, "t26c");
-		print_int   (fp, data, pos, "t27c");
-		print_int   (fp, data, pos, "t28c");
-		print_int   (fp, data, pos, "t29c");
-		print_int   (fp, data, pos, "t30c");
+		print_byte  (fp, data, "t03c");
+		print_int   (fp, data, "t04c");
+		print_int   (fp, data, "t05c");
+		print_float (fp, data, "t06c");
+		print_byte  (fp, data, "t07c");
+		print_byte  (fp, data, "t08c");
+		print_byte  (fp, data, "t09c");
+		print_int   (fp, data, "t10c");
+		print_int   (fp, data, "t11c");
+		print_byte  (fp, data, "t12c");
+		print_int   (fp, data, "t13c");
+		print_int   (fp, data, "t14c");
+		print_float (fp, data, "t15c");
+		print_int   (fp, data, "t16c");
+		print_int   (fp, data, "t17c");
+		print_int   (fp, data, "t18c");
+		print_int   (fp, data, "t19c");
+		print_float (fp, data, "t20c");
+		print_float (fp, data, "t21c");
+		print_float (fp, data, "t22c");
+		print_float (fp, data, "t23c");
+		print_float (fp, data, "t24c");
+		print_float (fp, data, "t25c");
+		print_float (fp, data, "t26c");
+		print_int   (fp, data, "t27c");
+		print_int   (fp, data, "t28c");
+		print_int   (fp, data, "t29c");
+		print_int   (fp, data, "t30c");
 	}
 }
 
-static void print_npc(FILE *fp, char *data, unsigned *pos)
+static void print_npc(FILE *fp, char **data)
 {
-	print_int   (fp, data, pos, "n01");
-	print_string(fp, data, pos, "n02");
+	print_int   (fp, data, "n01");
+	print_string(fp, data, "n02");
 
-	print_int   (fp, data, pos, "n03");
-	print_byte  (fp, data, pos, "n04");
-	print_byte  (fp, data, pos, "n05");
-	print_int   (fp, data, pos, "n06");
-	print_byte  (fp, data, pos, "n07");
-	print_int   (fp, data, pos, "n08");
-	print_int   (fp, data, pos, "n09");
-	print_int   (fp, data, pos, "n10");
-	print_byte  (fp, data, pos, "n11");
-	print_int   (fp, data, pos, "n12");
-	print_int   (fp, data, pos, "n13");
-	print_int   (fp, data, pos, "n14");
-	print_int   (fp, data, pos, "n15");
-	print_byte  (fp, data, pos, "n16");
-	print_byte  (fp, data, pos, "n17");
-	print_int   (fp, data, pos, "n18");
+	print_int   (fp, data, "n03");
+	print_byte  (fp, data, "n04");
+	print_byte  (fp, data, "n05");
+	print_int   (fp, data, "n06");
+	print_byte  (fp, data, "n07");
+	print_int   (fp, data, "n08");
+	print_int   (fp, data, "n09");
+	print_int   (fp, data, "n10");
+	print_byte  (fp, data, "n11");
+	print_int   (fp, data, "n12");
+	print_int   (fp, data, "n13");
+	print_int   (fp, data, "n14");
+	print_int   (fp, data, "n15");
+	print_byte  (fp, data, "n16");
+	print_byte  (fp, data, "n17");
+	print_int   (fp, data, "n18");
 
-	print_target(fp, data, pos);
+	print_target(fp, data);
 
-	print_byte  (fp, data, pos, "n20");
-	print_int   (fp, data, pos, "n21");
-	print_int   (fp, data, pos, "n22");
-	print_int   (fp, data, pos, "n23");
-	print_float (fp, data, pos, "n24");
-	print_float (fp, data, pos, "n25");
-	print_int   (fp, data, pos, "n26");
-	print_float (fp, data, pos, "n27");
-	print_float (fp, data, pos, "n28");
-	print_int   (fp, data, pos, "n29");
+	print_byte  (fp, data, "n20");
+	print_int   (fp, data, "n21");
+	print_int   (fp, data, "n22");
+	print_int   (fp, data, "n23");
+	print_float (fp, data, "n24");
+	print_float (fp, data, "n25");
+	print_int   (fp, data, "n26");
+	print_float (fp, data, "n27");
+	print_float (fp, data, "n28");
+	print_int   (fp, data, "n29");
 
-	print_common(fp, data, pos);
+	print_common(fp, data);
 }
 
-static void print_placeable(FILE *fp, char *data, unsigned *pos)
+static void print_placeable(FILE *fp, char **data)
 {
-	print_short (fp, data, pos, "p01");
-	print_short (fp, data, pos, "p02");
-	print_short (fp, data, pos, "p03");
-	print_short (fp, data, pos, "p04");
-	print_int   (fp, data, pos, "p05");
-	print_int   (fp, data, pos, "p06");
-	print_int   (fp, data, pos, "p07");
-	print_int   (fp, data, pos, "p08");
-	print_int   (fp, data, pos, "p09");
-	print_int   (fp, data, pos, "p10");
-	print_int   (fp, data, pos, "p11");
-	print_common(fp, data, pos);
+	print_short (fp, data, "p01");
+	print_short (fp, data, "p02");
+	print_short (fp, data, "p03");
+	print_short (fp, data, "p04");
+	print_int   (fp, data, "p05");
+	print_int   (fp, data, "p06");
+	print_int   (fp, data, "p07");
+	print_int   (fp, data, "p08");
+	print_int   (fp, data, "p09");
+	print_int   (fp, data, "p10");
+	print_int   (fp, data, "p11");
+	print_common(fp, data);
 }
 
 static int lot2txt(char *file, char *data)
@@ -405,15 +405,14 @@ static int lot2txt(char *file, char *data)
 		return 1;
 	}
 
-	unsigned pos = 0;
-	print_string(fp, data, &pos, "magic");
-	print_int   (fp, data, &pos, "version");
-	unsigned count = print_int(fp, data, &pos, "count");
+	print_string(fp, &data, "magic");
+	print_int   (fp, &data, "version");
+	unsigned count = print_int(fp, &data, "count");
 
 	for (unsigned i = 0; i < count; i++)
 	{
-		print_index(fp, data, &pos);
-		int type = print_int(fp, data, &pos, "Type");
+		print_index(fp, &data);
+		int type = print_int(fp, &data, "Type");
 
 		switch(type)
 		{
@@ -433,23 +432,23 @@ static int lot2txt(char *file, char *data)
 		case 68:
 		case 71:
 		case 73:
-			print_enemy (fp, data, &pos);
+			print_enemy (fp, &data);
 			break;
 		
 		case 4:
-			print_int   (fp, data, &pos, "e01a");
-			print_byte  (fp, data, &pos, "e02a");
-			print_byte  (fp, data, &pos, "e03a");
-			print_byte  (fp, data, &pos, "e04a");
-			print_enemy (fp, data, &pos);
+			print_int   (fp, &data, "e01a");
+			print_byte  (fp, &data, "e02a");
+			print_byte  (fp, &data, "e03a");
+			print_byte  (fp, &data, "e04a");
+			print_enemy (fp, &data);
 			break;
 
 		case 5:
 		case 6:
-			print_int   (fp, data, &pos, "e01b");
-			print_byte  (fp, data, &pos, "e02b");
-			print_byte  (fp, data, &pos, "e03b");
-			print_enemy (fp, data, &pos);
+			print_int   (fp, &data, "e01b");
+			print_byte  (fp, &data, "e02b");
+			print_byte  (fp, &data, "e03b");
+			print_enemy (fp, &data);
 			break;
 
 		case 7:
@@ -457,13 +456,13 @@ static int lot2txt(char *file, char *data)
 		case 9:
 		case 56:
 		case 57:
-			print_byte  (fp, data, &pos, "e01c");
-			print_byte  (fp, data, &pos, "e02c");
-			print_byte  (fp, data, &pos, "e03c");
-			print_byte  (fp, data, &pos, "e04c");
-			print_byte  (fp, data, &pos, "e05c");
-			print_float (fp, data, &pos, "e04c");
-			print_enemy (fp, data, &pos);
+			print_byte  (fp, &data, "e01c");
+			print_byte  (fp, &data, "e02c");
+			print_byte  (fp, &data, "e03c");
+			print_byte  (fp, &data, "e04c");
+			print_byte  (fp, &data, "e05c");
+			print_float (fp, &data, "e04c");
+			print_enemy (fp, &data);
 			break;
 
 		case 10:
@@ -475,9 +474,9 @@ static int lot2txt(char *file, char *data)
 		case 60:
 		case 61:
 		case 62:
-			print_byte  (fp, data, &pos, "e01d");
-			print_byte  (fp, data, &pos, "e02d");
-			print_enemy (fp, data, &pos);
+			print_byte  (fp, &data, "e01d");
+			print_byte  (fp, &data, "e02d");
+			print_enemy (fp, &data);
 			break;
 
 		case 14:
@@ -493,172 +492,172 @@ static int lot2txt(char *file, char *data)
 		case 63:
 		case 64:
 		case 65:
-			print_int   (fp, data, &pos, "e01e");
-			print_enemy (fp, data, &pos);
+			print_int   (fp, &data, "e01e");
+			print_enemy (fp, &data);
 			break;
 
 		case 17:
 		case 26:
-			print_int   (fp, data, &pos, "e01f");
-			print_int   (fp, data, &pos, "e02f");
-			print_enemy (fp, data, &pos);
+			print_int   (fp, &data, "e01f");
+			print_int   (fp, &data, "e02f");
+			print_enemy (fp, &data);
 			break;
 
 		case 34:
-			print_int   (fp, data, &pos, "e01g");
-			print_byte  (fp, data, &pos, "e02g");
-			print_byte  (fp, data, &pos, "e03g");
-			print_byte  (fp, data, &pos, "e04g");
-			print_byte  (fp, data, &pos, "e05g");
-			print_enemy (fp, data, &pos);
+			print_int   (fp, &data, "e01g");
+			print_byte  (fp, &data, "e02g");
+			print_byte  (fp, &data, "e03g");
+			print_byte  (fp, &data, "e04g");
+			print_byte  (fp, &data, "e05g");
+			print_enemy (fp, &data);
 			break;
 
 		case 19:
 		case 69:
-			print_byte  (fp, data, &pos, "e01h");
-			print_byte  (fp, data, &pos, "e02h");
-			print_byte  (fp, data, &pos, "e03h");
-			print_byte  (fp, data, &pos, "e04h");
-			print_byte  (fp, data, &pos, "e05h");
-			print_byte  (fp, data, &pos, "e06h");
-			print_byte  (fp, data, &pos, "e07h");
-			print_byte  (fp, data, &pos, "e08h");
-			print_byte  (fp, data, &pos, "e09h");
-			print_byte  (fp, data, &pos, "e10h");
-			print_byte  (fp, data, &pos, "e11h");
-			print_enemy (fp, data, &pos);
+			print_byte  (fp, &data, "e01h");
+			print_byte  (fp, &data, "e02h");
+			print_byte  (fp, &data, "e03h");
+			print_byte  (fp, &data, "e04h");
+			print_byte  (fp, &data, "e05h");
+			print_byte  (fp, &data, "e06h");
+			print_byte  (fp, &data, "e07h");
+			print_byte  (fp, &data, "e08h");
+			print_byte  (fp, &data, "e09h");
+			print_byte  (fp, &data, "e10h");
+			print_byte  (fp, &data, "e11h");
+			print_enemy (fp, &data);
 			break;
 
 		case 23:
-			print_int   (fp, data, &pos, "e01i");
-			print_int   (fp, data, &pos, "e02i");
-			print_int   (fp, data, &pos, "e03i");
-			print_byte  (fp, data, &pos, "e04i");
-			print_byte  (fp, data, &pos, "e05i");
-			print_int   (fp, data, &pos, "e06i");
-			print_float (fp, data, &pos, "e07i");
-			print_float (fp, data, &pos, "e08i");
-			print_float (fp, data, &pos, "e09i");
-			print_enemy (fp, data, &pos);
+			print_int   (fp, &data, "e01i");
+			print_int   (fp, &data, "e02i");
+			print_int   (fp, &data, "e03i");
+			print_byte  (fp, &data, "e04i");
+			print_byte  (fp, &data, "e05i");
+			print_int   (fp, &data, "e06i");
+			print_float (fp, &data, "e07i");
+			print_float (fp, &data, "e08i");
+			print_float (fp, &data, "e09i");
+			print_enemy (fp, &data);
 			break;
 
 		case 27:
 		case 33:
 		case 67:
-			print_byte  (fp, data, &pos, "e01j");
-			print_enemy (fp, data, &pos);
+			print_byte  (fp, &data, "e01j");
+			print_enemy (fp, &data);
 			break;
 
 		case 30:
 		case 70:
-			print_int   (fp, data, &pos, "e01k");
-			print_int   (fp, data, &pos, "e02k");
-			print_float (fp, data, &pos, "e03k");
-			print_float (fp, data, &pos, "e04k");
-			print_float (fp, data, &pos, "e05k");
-			print_enemy (fp, data, &pos);
+			print_int   (fp, &data, "e01k");
+			print_int   (fp, &data, "e02k");
+			print_float (fp, &data, "e03k");
+			print_float (fp, &data, "e04k");
+			print_float (fp, &data, "e05k");
+			print_enemy (fp, &data);
 			break;
 
 		case 35:
-			print_byte  (fp, data, &pos, "e01l");
-			print_float (fp, data, &pos, "e02l");
-			print_enemy (fp, data, &pos);
+			print_byte  (fp, &data, "e01l");
+			print_float (fp, &data, "e02l");
+			print_enemy (fp, &data);
 			break;
 
 		case 45:
-			print_float (fp, data, &pos, "e01m");
-			print_byte  (fp, data, &pos, "e02m");
-			print_enemy (fp, data, &pos);
+			print_float (fp, &data, "e01m");
+			print_byte  (fp, &data, "e02m");
+			print_enemy (fp, &data);
 			break;
 
 		case 66:
-			print_int   (fp, data, &pos, "e01n");
-			print_byte  (fp, data, &pos, "e02n");
-			print_float (fp, data, &pos, "e03n");
-			print_float (fp, data, &pos, "e04n");
-			print_float (fp, data, &pos, "e05n");
-			print_float (fp, data, &pos, "e06n");
-			print_float (fp, data, &pos, "e07n");
-			print_float (fp, data, &pos, "e08n");
-			print_enemy (fp, data, &pos);
+			print_int   (fp, &data, "e01n");
+			print_byte  (fp, &data, "e02n");
+			print_float (fp, &data, "e03n");
+			print_float (fp, &data, "e04n");
+			print_float (fp, &data, "e05n");
+			print_float (fp, &data, "e06n");
+			print_float (fp, &data, "e07n");
+			print_float (fp, &data, "e08n");
+			print_enemy (fp, &data);
 			break;
 
 		case 47:
-			print_npc   (fp, data, &pos);
+			print_npc   (fp, &data);
 			break;
 
 		case 48:
-			print_placeable(fp, data, &pos);
+			print_placeable(fp, &data);
 			break;
 
 		case 49:
-			print_string(fp, data, &pos, "p01a");
-			print_placeable(fp, data, &pos);
+			print_string(fp, &data, "p01a");
+			print_placeable(fp, &data);
 			break;
 
 		case 50:
-			print_int   (fp, data, &pos, "p01b");
-			print_short (fp, data, &pos, "p02b");
-			print_string(fp, data, &pos, "p03b");
-			print_placeable(fp, data, &pos);
+			print_int   (fp, &data, "p01b");
+			print_short (fp, &data, "p02b");
+			print_string(fp, &data, "p03b");
+			print_placeable(fp, &data);
 			break;
 
 		case 51:
-			print_float (fp, data, &pos, "p01c");
-			print_float (fp, data, &pos, "p02c");
-			print_placeable(fp, data, &pos);
+			print_float (fp, &data, "p01c");
+			print_float (fp, &data, "p02c");
+			print_placeable(fp, &data);
 			break;
 
 		case 52:
-			print_int   (fp, data, &pos, "p01d");
-			print_short (fp, data, &pos, "p02d");
-			print_placeable(fp, data, &pos);
+			print_int   (fp, &data, "p01d");
+			print_short (fp, &data, "p02d");
+			print_placeable(fp, &data);
 			break;
 
 		case 53:
-			print_short (fp, data, &pos, "p01e");
-			print_short (fp, data, &pos, "p02e");
-			print_short (fp, data, &pos, "p03e");
-			print_float (fp, data, &pos, "p04e");
-			print_float (fp, data, &pos, "p05e");
-			print_int   (fp, data, &pos, "p06e");
-			print_short (fp, data, &pos, "p07e");
-			print_placeable(fp, data, &pos);
+			print_short (fp, &data, "p01e");
+			print_short (fp, &data, "p02e");
+			print_short (fp, &data, "p03e");
+			print_float (fp, &data, "p04e");
+			print_float (fp, &data, "p05e");
+			print_int   (fp, &data, "p06e");
+			print_short (fp, &data, "p07e");
+			print_placeable(fp, &data);
 			break;
 
 		case 46:
-			print_int   (fp, data, &pos, "s01");
-			print_int   (fp, data, &pos, "s02");
-			print_byte  (fp, data, &pos, "s03");
-			print_byte  (fp, data, &pos, "s04");
-			print_int   (fp, data, &pos, "s05");
-			print_int   (fp, data, &pos, "s06");
-			print_int   (fp, data, &pos, "s07");
-			print_int   (fp, data, &pos, "s08");
-			print_int   (fp, data, &pos, "s09");
-			print_int   (fp, data, &pos, "s10");
-			print_int   (fp, data, &pos, "s11");
-			print_int   (fp, data, &pos, "s12");
-			print_int   (fp, data, &pos, "s13");
-			print_int   (fp, data, &pos, "s14");
-			print_int   (fp, data, &pos, "s15");
-			print_string(fp, data, &pos, "s16");
-			print_int   (fp, data, &pos, "s17");
-			print_float (fp, data, &pos, "s18");
-			print_float (fp, data, &pos, "s19");
-			print_float (fp, data, &pos, "s20");
-			print_float (fp, data, &pos, "s21");
-			print_float (fp, data, &pos, "s22");
-			print_float (fp, data, &pos, "s23");
-			print_float (fp, data, &pos, "s24");
-			print_float (fp, data, &pos, "s25");
-			print_float (fp, data, &pos, "s26");
-			print_float (fp, data, &pos, "s27");
-			print_byte  (fp, data, &pos, "s28");
+			print_int   (fp, &data, "s01");
+			print_int   (fp, &data, "s02");
+			print_byte  (fp, &data, "s03");
+			print_byte  (fp, &data, "s04");
+			print_int   (fp, &data, "s05");
+			print_int   (fp, &data, "s06");
+			print_int   (fp, &data, "s07");
+			print_int   (fp, &data, "s08");
+			print_int   (fp, &data, "s09");
+			print_int   (fp, &data, "s10");
+			print_int   (fp, &data, "s11");
+			print_int   (fp, &data, "s12");
+			print_int   (fp, &data, "s13");
+			print_int   (fp, &data, "s14");
+			print_int   (fp, &data, "s15");
+			print_string(fp, &data, "s16");
+			print_int   (fp, &data, "s17");
+			print_float (fp, &data, "s18");
+			print_float (fp, &data, "s19");
+			print_float (fp, &data, "s20");
+			print_float (fp, &data, "s21");
+			print_float (fp, &data, "s22");
+			print_float (fp, &data, "s23");
+			print_float (fp, &data, "s24");
+			print_float (fp, &data, "s25");
+			print_float (fp, &data, "s26");
+			print_float (fp, &data, "s27");
+			print_byte  (fp, &data, "s28");
 			break;
 
 		case 54:
-			print_target(fp, data, &pos);
+			print_target(fp, &data);
 			break;
 
 		default:
