@@ -22,21 +22,7 @@ int txt2bin(FILE *ifp, char *file)
 		char *s = line + strspn(line, SPACE);
 
 		if (!*s) continue;
-
-		if (*s == '[')
-		{
-			int i;
-
-			if (sscanf(s, "[ENTRY%u]", &i) != 1)
-			{
-				printf("Error parsing file: %s.txt\n", file);
-				ret = 1;
-				break;
-			}
-
-			fwrite(&i, 4, 1, fp);
-			continue;
-		}
+		if (*s == '[') continue;
 
 		char *p = strchr(s, '=');
 		if (!p)
@@ -52,6 +38,7 @@ int txt2bin(FILE *ifp, char *file)
 		s = strchr(s, ':');
 		if (!s)
 		{
+			printf("Error parsing file: %s.txt\n", file);
 			ret = 1;
 			break;
 		}

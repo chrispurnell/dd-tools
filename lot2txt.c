@@ -134,7 +134,7 @@ static float print_float(FILE *fp, char **data, char *name)
 	memcpy(&f, *data, 4);
 	*data += 4;
 
-	for (unsigned i = 1; i < 42; i++)
+	for (unsigned i = 1; i < 48; i++)
 	{
 		snprintf(str, 64, "%.*f", i, f);
 		if ((float)atof(str) == f)
@@ -159,15 +159,6 @@ static char *print_model(FILE *fp, char **data, char *name)
 	*data += strlen(s) + 1;
 	fprintf(fp, "%s:str = %s%s\n", name, s, get_enemy_name(s));
 	return s;
-}
-
-static int print_index(FILE *fp, char **data)
-{
-	int i;
-	memcpy(&i, *data, 4);
-	*data += 4;
-	fprintf(fp, "\n[ENTRY%04u]\n", i);
-	return i;
 }
 
 static void print_array(FILE *fp, char **data, char *name, unsigned n)
@@ -411,7 +402,9 @@ static int lot2txt(char *file, char *data)
 
 	for (unsigned i = 0; i < count; i++)
 	{
-		print_index(fp, &data);
+		fprintf(fp, "\n[ENTRY%04u]\n", i);
+
+		print_int(fp, &data, "Index");
 		int type = print_int(fp, &data, "Type");
 
 		switch(type)
