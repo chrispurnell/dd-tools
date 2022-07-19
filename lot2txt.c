@@ -86,7 +86,7 @@ static const char *enemy_names[][2] = {
 
 static const char *get_enemy_name(const char *string)
 {
-	unsigned i = 0;
+	int i = 0;
 
 	while (enemy_names[i][0])
 	{
@@ -134,7 +134,7 @@ static float print_float(FILE *fp, char **data, char *name)
 	memcpy(&f, *data, 4);
 	*data += 4;
 
-	for (unsigned i = 1; i < 48; i++)
+	for (int i = 1; i < 48; i++)
 	{
 		snprintf(str, 64, "%.*f", i, f);
 		if ((float)atof(str) == f)
@@ -161,9 +161,9 @@ static char *print_model(FILE *fp, char **data, char *name)
 	return s;
 }
 
-static void print_array(FILE *fp, char **data, char *name, unsigned n)
+static void print_array(FILE *fp, char **data, char *name, int n)
 {
-	for (unsigned i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)
 	{
 		short v;
 		memcpy(&v, *data, 2);
@@ -187,14 +187,14 @@ static void print_common(FILE *fp, char **data)
 
 	print_int   (fp, data, "u11");
 	print_int   (fp, data, "u12");
-	print_byte  (fp, data, "u11");
-	print_byte  (fp, data, "u12");
-	print_byte  (fp, data, "u11");
-	print_int   (fp, data, "u12");
+	print_byte  (fp, data, "u13");
+	print_byte  (fp, data, "u14");
+	print_byte  (fp, data, "u15");
+	print_int   (fp, data, "u16");
 
 	print_model (fp, data, "Model");
 
-	print_int   (fp, data, "u14");
+	print_int   (fp, data, "u18");
 	print_float (fp, data, "PositionX");
 	print_float (fp, data, "PositionY");
 	print_float (fp, data, "PositionZ");
@@ -204,8 +204,8 @@ static void print_common(FILE *fp, char **data)
 	print_float (fp, data, "ScaleX");
 	print_float (fp, data, "ScaleY");
 	print_float (fp, data, "ScaleZ");
-	print_float (fp, data, "u24");
-	print_byte  (fp, data, "u25");
+	print_float (fp, data, "u28");
+	print_byte  (fp, data, "u29");
 }
 
 static void print_enemy(FILE *fp, char **data)
@@ -222,7 +222,7 @@ static void print_enemy(FILE *fp, char **data)
 	print_byte  (fp, data, "e10");
 	print_byte  (fp, data, "e11");
 	print_int   (fp, data, "e12");
-	print_string(fp, data, "e13");
+	print_string(fp, data, "FSM");
 	print_byte  (fp, data, "e14");
 	print_float (fp, data, "e15");
 	print_int   (fp, data, "e16");
@@ -328,7 +328,7 @@ static void print_target(FILE *fp, char **data)
 static void print_npc(FILE *fp, char **data)
 {
 	print_int   (fp, data, "n01");
-	print_string(fp, data, "n02");
+	print_string(fp, data, "FSM");
 
 	print_int   (fp, data, "n03");
 	print_byte  (fp, data, "n04");
@@ -398,9 +398,9 @@ static int lot2txt(char *file, char *data)
 
 	print_string(fp, &data, "magic");
 	print_int   (fp, &data, "version");
-	unsigned count = print_int(fp, &data, "count");
+	int count = print_int(fp, &data, "count");
 
-	for (unsigned i = 0; i < count; i++)
+	for (int i = 0; i < count; i++)
 	{
 		fprintf(fp, "\n[ENTRY%04u]\n", i);
 
@@ -584,14 +584,14 @@ static int lot2txt(char *file, char *data)
 			break;
 
 		case 49:
-			print_string(fp, &data, "p01a");
+			print_string(fp, &data, "FSM");
 			print_placeable(fp, &data);
 			break;
 
 		case 50:
 			print_int   (fp, &data, "p01b");
 			print_short (fp, &data, "p02b");
-			print_string(fp, &data, "p03b");
+			print_string(fp, &data, "FSM");
 			print_placeable(fp, &data);
 			break;
 
@@ -624,29 +624,7 @@ static int lot2txt(char *file, char *data)
 			print_byte  (fp, &data, "s03");
 			print_byte  (fp, &data, "s04");
 			print_int   (fp, &data, "s05");
-			print_int   (fp, &data, "s06");
-			print_int   (fp, &data, "s07");
-			print_int   (fp, &data, "s08");
-			print_int   (fp, &data, "s09");
-			print_int   (fp, &data, "s10");
-			print_int   (fp, &data, "s11");
-			print_int   (fp, &data, "s12");
-			print_int   (fp, &data, "s13");
-			print_int   (fp, &data, "s14");
-			print_int   (fp, &data, "s15");
-			print_string(fp, &data, "s16");
-			print_int   (fp, &data, "s17");
-			print_float (fp, &data, "s18");
-			print_float (fp, &data, "s19");
-			print_float (fp, &data, "s20");
-			print_float (fp, &data, "s21");
-			print_float (fp, &data, "s22");
-			print_float (fp, &data, "s23");
-			print_float (fp, &data, "s24");
-			print_float (fp, &data, "s25");
-			print_float (fp, &data, "s26");
-			print_float (fp, &data, "s27");
-			print_byte  (fp, &data, "s28");
+			print_common(fp, &data);
 			break;
 
 		case 54:
