@@ -228,16 +228,16 @@ static void print_array(FILE *ifp, FILE *ofp, int ind, char *name)
 static void print_common(FILE *ifp, FILE *ofp, int ind)
 {
 	print_int   (ifp, ofp, ind, "mAreaHitNo");
-	print_byte  (ifp, ofp, ind, "HP\345\200\215\347\216\207\350\250\255\345\256\232\343\201\256\346\234\211\347\204\241");
-	print_float (ifp, ofp, ind, "HP\343\201\256\345\200\215\347\216\207");
-	print_byte  (ifp, ofp, ind, "\346\224\273\346\222\203\345\212\233\345\200\215\347\216\207\350\250\255\345\256\232\343\201\256\346\234\211\347\204\241");
-	print_float (ifp, ofp, ind, "\346\224\273\346\222\203\345\212\233\343\201\256\345\244\211\345\214\226\345\200\215\347\216\207");
-	print_byte  (ifp, ofp, ind, "\351\230\262\345\276\241\345\212\233\345\200\215\347\216\207\350\250\255\345\256\232\343\201\256\346\234\211\347\204\241");
-	print_float (ifp, ofp, ind, "\351\230\262\345\276\241\345\212\233\343\201\256\345\244\211\345\214\226\345\200\215\347\216\207");
-	print_byte  (ifp, ofp, ind, "\351\255\224\346\263\225\345\212\233\345\200\215\347\216\207\350\250\255\345\256\232\343\201\256\346\234\211\347\204\241");
-	print_float (ifp, ofp, ind, "\351\255\224\346\263\225\345\212\233\343\201\256\345\244\211\345\214\226\345\200\215\347\216\207");
-	print_byte  (ifp, ofp, ind, "\351\255\224\346\263\225\351\230\262\345\276\241\345\212\233\345\200\215\347\216\207\350\250\255\345\256\232\343\201\256\346\234\211\347\204\241");
-	print_float (ifp, ofp, ind, "\351\255\224\346\263\225\351\230\262\345\276\241\345\212\233\343\201\256\345\244\211\345\214\226\345\200\215\347\216\207");
+	print_byte  (ifp, ofp, ind, "mIsSetHp");
+	print_float (ifp, ofp, ind, "mHpRatio");
+	print_byte  (ifp, ofp, ind, "mIsSetAtkPow");
+	print_float (ifp, ofp, ind, "mAtkPowRatio");
+	print_byte  (ifp, ofp, ind, "mIsSetDefence");
+	print_float (ifp, ofp, ind, "mDefenceRatio");
+	print_byte  (ifp, ofp, ind, "mIsSetMagicPow");
+	print_float (ifp, ofp, ind, "mMagicPowRatio");
+	print_byte  (ifp, ofp, ind, "mIsSetMagicDef");
+	print_float (ifp, ofp, ind, "mMagicDefRatio");
 	print_int   (ifp, ofp, ind, "mAIKnowledgeFlag");
 	print_int   (ifp, ofp, ind, "mAIKind");
 	print_byte  (ifp, ofp, ind, "mIsAINoTarget");
@@ -264,11 +264,11 @@ static void print_enemy(FILE *ifp, FILE *ofp, int ind)
 	print_int   (ifp, ofp, ind, "mEmItemFlag");
 	print_int   (ifp, ofp, ind, "mEmItemTable");
 	print_int   (ifp, ofp, ind, "mDieSet");
-	print_byte  (ifp, ofp, ind, "\346\255\273\344\275\223\351\200\237\346\224\273\346\266\210\346\273\205\343\203\225\343\203\251\343\202\260");
-	print_byte  (ifp, ofp, ind, "\346\255\273\344\272\241\346\266\210\346\273\205\346\231\202\351\226\223\345\273\266\351\225\267");
+	print_byte  (ifp, ofp, ind, "mCorpseQuickDiscreate");
+	print_byte  (ifp, ofp, ind, "mIsDieEraseTimeExtend");
 	print_byte  (ifp, ofp, ind, "mRandomSetIgnore");
 	print_int   (ifp, ofp, ind, "mExperienceOW");
-	print_string(ifp, ofp, ind, "mFsmFilePath");
+	print_string(ifp, ofp, ind, "mFsmPath");
 	print_byte  (ifp, ofp, ind, "\343\202\273\343\203\263\343\202\265\343\203\274\345\215\212\345\276\204\345\200\215\347\216\207\343\202\222\344\275\277\347\224\250\343\201\231\343\202\213");
 	print_float (ifp, ofp, ind, "\343\202\273\343\203\263\343\202\265\343\203\274\345\215\212\345\276\204\345\200\215\347\216\207");
 
@@ -483,8 +483,8 @@ static int lot2xml(FILE *ifp, char *file)
 		case 60: // em0406
 		case 61: // em0407
 		case 62: // em0408
-			print_byte  (ifp, ofp, 3, "\345\243\201\343\202\271\343\202\277\343\203\274\343\203\210");
-			print_byte  (ifp, ofp, 3, "\345\205\211\345\255\246\350\277\267\345\275\251");
+			print_byte  (ifp, ofp, 3, "mIsWallStart");
+			print_byte  (ifp, ofp, 3, "mIsOptCamStart");
 			print_enemy (ifp, ofp, 3);
 			break;
 
@@ -524,12 +524,12 @@ static int lot2xml(FILE *ifp, char *file)
 			print_int   (ifp, ofp, 3, "mType");
 			print_int   (ifp, ofp, 3, "mWeaponType");
 			print_int   (ifp, ofp, 3, "mTuskType");
-			print_byte  (ifp, ofp, 3, "\350\245\277\351\203\250\343\202\265\343\202\244\343\202\257\343\203\255");
-			print_byte  (ifp, ofp, 3, "\350\246\232\350\200\205\343\201\256\350\250\274\343\202\265\343\202\244\343\202\257\343\203\255");
-			print_int   (ifp, ofp, 3, "\350\246\232\350\200\205\343\201\256\350\250\274\343\202\265\343\202\244\343\202\257\343\203\255\343\201\256\343\201\250\343\201\215\343\201\256\347\265\214\351\250\223\345\200\244");
-			print_float (ifp, ofp, 3, "\350\246\232\350\200\205\343\201\256\350\250\274\343\202\265\343\202\244\343\202\257\343\203\255\343\201\256\343\201\250\343\201\215\343\201\256\346\256\213\343\202\212HP\343\201\256\345\200\215\347\216\207");
-			print_float (ifp, ofp, 3, "\350\246\232\350\200\205\343\201\256\350\250\274\343\202\265\343\202\244\343\202\257\343\203\255\343\201\256\343\201\250\343\201\215\343\201\256\350\266\263\343\201\256\343\201\256\343\201\221\343\201\236\343\202\212\345\200\244");
-			print_float (ifp, ofp, 3, "\350\246\232\350\200\205\343\201\256\350\250\274\343\202\265\343\202\244\343\202\257\343\203\255\343\201\256\343\201\250\343\201\215\343\201\256\350\266\263\343\201\256\343\201\266\343\201\243\343\201\250\343\201\263\345\200\244");
+			print_byte  (ifp, ofp, 3, "mIsWest");
+			print_byte  (ifp, ofp, 3, "mIsKakusya");
+			print_int   (ifp, ofp, 3, "mKakusyaExp");
+			print_float (ifp, ofp, 3, "mKakusyaRestHpRate");
+			print_float (ifp, ofp, 3, "mKakusyaLegDP");
+			print_float (ifp, ofp, 3, "mKakusyaLegBP");
 			print_enemy (ifp, ofp, 3);
 			break;
 
@@ -550,7 +550,7 @@ static int lot2xml(FILE *ifp, char *file)
 			break;
 
 		case 27: // em5200
-			print_byte  (ifp, ofp, 3, "\346\255\273\344\272\241\346\274\224\345\207\272\343\202\253\343\203\241\343\203\251\343\202\222\343\201\231\343\202\213");
+			print_byte  (ifp, ofp, 3, "mIsReqDieCamera");
 			print_enemy (ifp, ofp, 3);
 			break;
 
@@ -561,9 +561,9 @@ static int lot2xml(FILE *ifp, char *file)
 
 		case 30: // em5500B
 		case 70: // em5500C
-			print_int   (ifp, ofp, 3, "\350\247\246\346\211\213\343\201\214\351\255\224\346\263\225\345\207\272\346\235\245\343\202\213\346\225\260");
-			print_int   (ifp, ofp, 3, "\350\247\246\346\211\213\343\201\214\343\203\257\343\203\274\343\203\227\345\207\272\346\235\245\343\202\213\346\225\260");
-			print_vector(ifp, ofp, 3, "\350\247\246\346\211\213\343\201\214\343\203\257\343\203\274\343\203\227\345\207\272\346\235\245\343\202\213\347\257\204\345\233\262");
+			print_byte  (ifp, ofp, 3, "mTentacleMagicCanNum");
+			print_int   (ifp, ofp, 3, "mTentacleWarpMaxNum");
+			print_vector(ifp, ofp, 3, "mTentacleWarpExtent");
  			print_enemy (ifp, ofp, 3);
 			break;
 
@@ -580,8 +580,8 @@ static int lot2xml(FILE *ifp, char *file)
 
 		case 34: // em5900
 			print_int   (ifp, ofp, 3, "mSetType");
-			print_byte  (ifp, ofp, 3, "\351\243\233\343\201\260\343\201\252\343\201\204");
-			print_byte  (ifp, ofp, 3, "\345\233\272\346\234\211\345\226\213\343\202\212");
+			print_byte  (ifp, ofp, 3, "mNonFlySet");
+			print_byte  (ifp, ofp, 3, "mOriginalTalk");
 			print_byte  (ifp, ofp, 3, "\343\203\252\343\203\203\343\203\201\343\201\262\343\202\207\343\201\206\343\201\204");
 			print_byte  (ifp, ofp, 3, "\346\227\213\345\233\236\351\243\233\350\241\214\343\201\227\343\201\252\343\201\204");
 			print_enemy (ifp, ofp, 3);
@@ -594,8 +594,8 @@ static int lot2xml(FILE *ifp, char *file)
 			break;
 
 		case 45: // em9807
-			print_float (ifp, ofp, 3, "\345\213\225\344\275\234\346\231\202\351\226\223(\347\247\222)");
-			print_byte  (ifp, ofp, 3, "\343\202\265\343\202\246\343\203\263\343\203\211OFF");
+			print_float (ifp, ofp, 3, "mLifeTime");
+			print_byte  (ifp, ofp, 3, "mIsSoundOff");
 			print_enemy (ifp, ofp, 3);
 			break;
 

@@ -240,12 +240,12 @@ static int print_shape(FILE *ifp, FILE *ofp, int ind)
 	fprintf(ofp, "<class>\n");
 	int in = ind + 1;
 
-	print_string(ifp, ofp, in, "Name");
-	print_float (ifp, ofp, in, "CheckAngle");
-	print_float (ifp, ofp, in, "CheckRange");
-	print_float (ifp, ofp, in, "CheckToward");
-	print_byte  (ifp, ofp, in, "AngleFlag");
-	print_byte  (ifp, ofp, in, "TowardFlag");
+	print_string(ifp, ofp, in, "mName");
+	print_float (ifp, ofp, in, "mCheckAngle");
+	print_float (ifp, ofp, in, "mCheckRange");
+	print_float (ifp, ofp, in, "mCheckToward");
+	print_byte  (ifp, ofp, in, "mAngleFlag");
+	print_byte  (ifp, ofp, in, "mTowardFlag");
 
 	int type = print_int(ifp, ofp, in, "type");
 	print_float (ifp, ofp, in, "mDecay");
@@ -321,8 +321,8 @@ static int gpl2xml(FILE *ifp, char *file)
 
 		indent(ofp, 2);
 		fprintf(ofp, "<class>\n");
-		print_int(ifp, ofp, 3, "\343\202\257\343\203\251\343\202\271");
-		print_hex(ifp, ofp, 3, "mGroup");
+		print_int(ifp, ofp, 3, "mGroupClass");
+		print_hex(ifp, ofp, 3, "mGroup"); // mDLCNo:4 / mIsDisableSplit:1 / mPriority:18 / mGroup:9
 
 		n = read_int(ifp);
 		indent(ofp, 3);
@@ -346,10 +346,10 @@ static int gpl2xml(FILE *ifp, char *file)
 		{
 			indent(ofp, 4);
 			fprintf(ofp, "<class>\n");
-			print_int(ifp, ofp, 5, "Area");
-			print_int(ifp, ofp, 5, "Group");
-			print_int(ifp, ofp, 5, "SplitX");
-			print_int(ifp, ofp, 5, "SplitZ");
+			print_int(ifp, ofp, 5, "mLayoutID");
+			print_int(ifp, ofp, 5, "mGroup");
+			print_int(ifp, ofp, 5, "mSplitX");
+			print_int(ifp, ofp, 5, "mSplitZ");
 			indent(ofp, 4);
 			fprintf(ofp, "</class>\n");
 		}
@@ -368,19 +368,19 @@ static int gpl2xml(FILE *ifp, char *file)
 		print_int  (ifp, ofp, 3, "\346\255\273\344\275\223\343\202\222\343\202\273\343\203\203\343\203\210\343\201\227\343\201\252\343\201\204");
 		print_int  (ifp, ofp, 3, "\346\255\273\344\275\223\346\271\247\343\201\215\343\202\250\343\203\225\343\202\247\343\202\257\343\203\210\343\202\222\345\274\267\345\210\266\343\202\273\343\203\203\343\203\210");
 		print_int  (ifp, ofp, 3, "\346\234\200\345\204\252\345\205\210\346\231\202\343\200\201\344\273\226\343\202\260\343\203\253\343\203\274\343\203\227\343\201\256\343\203\246\343\203\213\343\203\203\343\203\210\343\202\222\343\202\273\343\203\203\343\203\210\343\201\227\343\201\252\343\201\204");
-		print_int  (ifp, ofp, 3, "\343\202\267\343\203\212\343\203\252\343\202\252");
-		print_int  (ifp, ofp, 3, "\351\226\213\345\247\213");
-		print_int  (ifp, ofp, 3, "\347\265\202\344\272\206");
-		print_int  (ifp, ofp, 3, "LOT\343\203\225\343\203\251\343\202\260");
-		print_int  (ifp, ofp, 3, "LOT\343\203\225\343\203\251\343\202\2602");
-		print_short(ifp, ofp, 3, "\343\203\225\343\203\251\343\202\260No.");
-		print_short(ifp, ofp, 3, "\343\203\225\343\203\251\343\202\260No2.");
-		print_int  (ifp, ofp, 3, "\346\231\202\351\226\223");
-		print_short(ifp, ofp, 3, "\351\226\213\345\247\213\346\231\202\351\226\223");
-		print_short(ifp, ofp, 3, "\347\265\202\344\272\206\346\231\202\351\226\223");
-		print_int  (ifp, ofp, 3, "KILL\343\202\250\343\203\252\343\202\242\343\201\253\345\205\245\343\201\243\343\201\237\346\231\202\351\226\223\343\201\247\345\210\244\345\256\232");
+		print_int  (ifp, ofp, 3, "mLoadScenario");
+		print_int  (ifp, ofp, 3, "mAppearBgn");
+		print_int  (ifp, ofp, 3, "mAppearEnd");
+		print_int  (ifp, ofp, 3, "mLoadLotFlag");
+		print_int  (ifp, ofp, 3, "mLoadLotFlag2");
+		print_short(ifp, ofp, 3, "mFlagNo");
+		print_short(ifp, ofp, 3, "mFlagNo2");
+		print_int  (ifp, ofp, 3, "mSetTime");
+		print_short(ifp, ofp, 3, "mSetHourBgn");
+		print_short(ifp, ofp, 3, "mSetHourEnd");
+		print_int  (ifp, ofp, 3, "mUseKAInsideTime");
 		print_int  (ifp, ofp, 3, "\346\211\200\346\214\201\343\202\242\343\202\244\343\203\206\343\203\240No.");
-		print_int  (ifp, ofp, 3, "\343\202\250\343\203\252\343\202\242\343\203\222\343\203\203\343\203\210");
+		print_int  (ifp, ofp, 3, "mSetAreaHit");
 
 		n = read_int(ifp);
 		indent(ofp, 3);
@@ -397,21 +397,21 @@ static int gpl2xml(FILE *ifp, char *file)
 		indent(ofp, 3);
 		fprintf(ofp, "</array>\n");
 
-		print_int(ifp, ofp, 3, "FSM");
-                print_int(ifp, ofp, 3, "\343\203\252\343\202\257\343\202\250\343\202\271\343\203\210\345\276\205\343\201\241");
-                print_int(ifp, ofp, 3, "\343\202\250\343\203\252\343\202\242\343\203\201\343\202\247\343\203\263\343\202\270\346\231\202\343\201\256\343\201\277\343\202\273\343\203\203\343\203\210");
-                print_int(ifp, ofp, 3, "\343\202\267\343\203\263\343\203\227\343\203\253\343\202\244\343\203\231\343\203\263\343\203\210\344\270\255\346\234\200\345\274\267");
-                print_int(ifp, ofp, 3, "\346\234\200\345\244\247\343\202\273\343\203\203\343\203\210\345\233\236\346\225\260");
-                print_int(ifp, ofp, 3, "Enemy Group Link");
-                print_int(ifp, ofp, 3, "\346\225\265\343\202\260\343\203\253\343\203\274\343\203\227");
-                print_int(ifp, ofp, 3, "LOT\343\203\225\343\203\251\343\202\260\343\201\214\346\266\210\343\201\210\343\201\237");
-                print_int(ifp, ofp, 3, "\343\202\267\343\203\212\343\203\252\343\202\252\347\225\252\345\217\267\347\257\204\345\233\262\345\244\226");
-                print_int(ifp, ofp, 3, "\346\231\202\351\226\223\345\244\226");
-                print_int(ifp, ofp, 3, "\345\206\215\343\202\273\343\203\203\343\203\210\343\202\277\343\202\244\343\203\227");
-                print_int(ifp, ofp, 3, "\345\206\215\343\202\273\343\203\203\343\203\210\346\227\245\346\225\260");
-                print_int(ifp, ofp, 3, "\346\227\251\346\234\237\345\206\215\343\202\273\343\203\203\343\203\210\347\242\272\347\216\207");
-                print_int(ifp, ofp, 3, "\346\227\251\346\234\237\345\206\215\343\202\273\343\203\203\343\203\210\347\242\272\347\216\207\345\242\227\345\212\240\351\207\217");
-                print_int(ifp, ofp, 3, "\345\274\267\345\210\266\345\206\215\343\202\273\343\203\203\343\203\210\345\276\205\343\201\241");
+		print_int(ifp, ofp, 3, "mSetFsm");
+		print_int(ifp, ofp, 3, "mSetRequest");
+		print_int(ifp, ofp, 3, "mSetChArea");
+		print_int(ifp, ofp, 3, "mSetSimpleEv");
+		print_int(ifp, ofp, 3, "mSetCountMax");
+		print_int(ifp, ofp, 3, "mSetEmGroupLink");
+		print_int(ifp, ofp, 3, "mLinkEmGroup");
+		print_int(ifp, ofp, 3, "mDeleteLotFlag");
+		print_int(ifp, ofp, 3, "mDeleteScenario");
+		print_int(ifp, ofp, 3, "mDeleteTime");
+		print_int(ifp, ofp, 3, "mRspnType");
+		print_int(ifp, ofp, 3, "mRspnDay");
+		print_int(ifp, ofp, 3, "mRspnProb");
+		print_int(ifp, ofp, 3, "mRspnProbAdd");
+		print_int(ifp, ofp, 3, "mRspnForceRspn");
 
 		n = read_int(ifp);
 		indent(ofp, 3);
@@ -436,7 +436,7 @@ static int gpl2xml(FILE *ifp, char *file)
 		indent(ofp, 3);
 		fprintf(ofp, "</array>\n");
 
-                print_int(ifp, ofp, 3, "KILL\343\202\250\343\203\252\343\202\242\343\202\277\343\202\244\343\203\227");
+		print_int(ifp, ofp, 3, "mKillAreaType");
 
 		n = read_int(ifp);
 		indent(ofp, 3);
@@ -453,10 +453,10 @@ static int gpl2xml(FILE *ifp, char *file)
 		indent(ofp, 3);
 		fprintf(ofp, "</array>\n");
 		
-                print_byte(ifp, ofp, 3, "\343\201\257\343\201\204\343\201\213\343\201\204\343\202\250\343\203\252\343\202\242\343\202\222\345\205\261\346\234\211\343\201\231\343\202\213");
-                print_int (ifp, ofp, 3, "\345\205\261\346\234\211\343\201\257\343\201\204\343\201\213\343\201\204\343\202\250\343\203\252\343\202\242\343\202\260\343\203\253\343\203\274\343\203\227");
-                print_byte(ifp, ofp, 3, "KILL\343\202\250\343\203\252\343\202\242\343\202\222\345\205\261\346\234\211\343\201\231\343\202\213");
-                print_int (ifp, ofp, 3, "\345\205\261\346\234\211Kill\343\202\250\343\203\252\343\202\242\343\202\260\343\203\253\343\203\274\343\203\227");
+		print_byte(ifp, ofp, 3, "\343\201\257\343\201\204\343\201\213\343\201\204\343\202\250\343\203\252\343\202\242\343\202\222\345\205\261\346\234\211\343\201\231\343\202\213");
+		print_int (ifp, ofp, 3, "\345\205\261\346\234\211\343\201\257\343\201\204\343\201\213\343\201\204\343\202\250\343\203\252\343\202\242\343\202\260\343\203\253\343\203\274\343\203\227");
+		print_byte(ifp, ofp, 3, "KILL\343\202\250\343\203\252\343\202\242\343\202\222\345\205\261\346\234\211\343\201\231\343\202\213");
+		print_int (ifp, ofp, 3, "\345\205\261\346\234\211Kill\343\202\250\343\203\252\343\202\242\343\202\260\343\203\253\343\203\274\343\203\227");
 
 		indent(ofp, 2);
 		fprintf(ofp, "</class>\n");
