@@ -561,7 +561,7 @@ static int lot2xml(FILE *ifp, char *file)
 
 		case 30: // em5500B
 		case 70: // em5500C
-			print_byte  (ifp, ofp, 3, "mTentacleMagicCanNum");
+			print_int  (ifp, ofp, 3, "mTentacleMagicCanNum");
 			print_int   (ifp, ofp, 3, "mTentacleWarpMaxNum");
 			print_vector(ifp, ofp, 3, "mTentacleWarpExtent");
  			print_enemy (ifp, ofp, 3);
