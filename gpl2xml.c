@@ -234,6 +234,12 @@ static void print_vector(FILE *ifp, FILE *ofp, int ind, const char *name)
 	fprintf(ofp, "</vector>\n");
 }
 
+static int print_bits(FILE *ofp, int ind, int bits, const char *name, int value)
+{
+	indent(ofp, ind);
+	fprintf(ofp, "<b%u name=\"%s\" value=\"%d\">\n", bits, name, value);
+}
+
 static int print_shape(FILE *ifp, FILE *ofp, int ind)
 {
 	indent(ofp, ind);
@@ -322,7 +328,12 @@ static int gpl2xml(FILE *ifp, char *file)
 		indent(ofp, 2);
 		fprintf(ofp, "<class>\n");
 		print_int(ifp, ofp, 3, "mGroupClass");
-		print_hex(ifp, ofp, 3, "mGroup"); // mDLCNo:4 / mIsDisableSplit:1 / mPriority:18 / mGroup:9
+
+		n = read_int(ifp);
+		print_bits(ofp, 3, 9, "mGroup", n & 0x1FF);
+		print_bits(ofp, 3, 18, "mPriority", (n >> 9) & 0x3FFFF);
+		print_bits(ofp, 3, 1, "mIsDisableSplit", (n >> 27) & 0x1);
+		print_bits(ofp, 3, 4, "mDLCNo", (n >> 28) & 0xF);
 
 		n = read_int(ifp);
 		indent(ofp, 3);
