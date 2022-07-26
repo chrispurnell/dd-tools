@@ -365,15 +365,20 @@ static void print_npc(FILE *ifp, FILE *ofp, int ind)
 
 	print_target(ifp, ofp, ind);
 
-	print_byte  (ifp, ofp, ind, "\345\244\226\351\203\250\346\214\207\345\256\232");
-	print_int   (ifp, ofp, ind, "\345\276\205\346\251\237\350\241\214\345\213\225\343\202\277\343\202\244\343\203\227");
-	print_int   (ifp, ofp, ind, "\345\206\205\351\203\250\343\203\225\343\203\251\343\202\260");
-	print_int   (ifp, ofp, ind, "\345\276\205\346\251\237\350\241\214\345\213\225\347\225\252\345\217\267");
-	print_float (ifp, ofp, ind, "\345\237\272\346\234\254\345\276\205\346\251\237\346\231\202\351\226\223");
-	print_float (ifp, ofp, ind, "\343\203\251\343\203\263\343\203\200\343\203\240\345\276\205\346\251\237\346\231\202\351\226\223");
-	print_int   (ifp, ofp, ind, "\343\201\227\343\201\220\343\201\225\350\241\214\345\213\225\347\225\252\345\217\267");
-	print_float (ifp, ofp, ind, "\345\237\272\346\234\254\343\201\227\343\201\220\343\201\225\346\231\202\351\226\223");
-	print_float (ifp, ofp, ind, "\343\203\251\343\203\263\343\203\200\343\203\240\343\201\227\343\201\220\343\201\225\346\231\202\351\226\223");
+	print_byte  (ifp, ofp, ind, "mWaitParamExist");
+	indent(ofp, ind);
+	fprintf(ofp, "<clss name=\"mWaitParam\">\n");
+	int in = ind + 1;
+	print_int   (ifp, ofp, in, "Type");
+	print_int   (ifp, ofp, in, "Flag");
+	print_int   (ifp, ofp, in, "WaitActNo");
+	print_float (ifp, ofp, in, "BaseWaitTimer");
+	print_float (ifp, ofp, in, "RandWaitTimer");
+	print_int   (ifp, ofp, in, "BehaviorActNo");
+	print_float (ifp, ofp, in, "BaseBehaviourTimer");
+	print_float (ifp, ofp, in, "RandBehaviourTimer");
+	indent(ofp, ind);
+	fprintf(ofp, "</class>\n");
 
 	print_common(ifp, ofp, ind);
 }
