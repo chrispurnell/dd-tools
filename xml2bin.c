@@ -311,18 +311,6 @@ int main(int argc, char **argv)
 					{
 						fwrite(xml_value, strlen(xml_value)+1, 1, ofp);
 					}
-					else
-					{
-						int b = match_bits(xml_tag);
-						if (b > 0)
-						{
-							int i = 0;
-							sscanf(xml_value, "%i", &i);
-							i &= (1 << b) - 1;
-							value |= i << bits;
-							bits += b;
-						}
-					}
 				}
 			}
 			else if (strcmp(xml_attr, "count") == 0)
