@@ -17,10 +17,13 @@ static char *xml_value;
 #define XML_ATTR  3
 #define XML_PREEQ 4
 #define XML_EQ    5
-#define XML_VALUE 6
-#define XML_COM   7
-#define XML_COM1  8
-#define XML_COM2  9
+#define XML_VALD  6
+#define XML_VALS  7
+#define XML_SPC   8
+#define XML_END   9
+#define XML_COM   10
+#define XML_COM1  11
+#define XML_COM2  12
 
 #define XML_OK    0
 #define XML_ERROR 1
@@ -58,31 +61,58 @@ static int xml_parse(FILE *fp)
 			{
 			case '>':
 				xml_status = XML_TEXT;
-				break;
+				xml_buffer[xml_index] = 0;
+				xml_attr = xml_buffer + xml_index;
+				xml_value = xml_attr; 
+				return XML_OK;
 			case '<':
 			case '=':
 			case '"':
+			case '\'':
 				return XML_ERROR;
+			case '/':
+				if (xml_index == 0)
+				{
+					xml_buffer[0] = '/';
+					xml_index = 1;
+					break;
+				}
+				if (xml_buffer[0] == '/')
+					return XML_ERROR;
+				xml_buffer[xml_index] = 0;
+				if (++xml_index >= BUF_SIZE)
+					return XML_ERROR;
+				xml_attr = xml_buffer + xml_index;
+				xml_attr[0] = 0;
+				xml_value = xml_attr; 
+				xml_status = XML_END;
+				return XML_OK;
 			case '-':
 				if (xml_index == 2 && xml_buffer[0] == '!' && xml_buffer[1] == '-')
 				{
 					xml_status = XML_COM;
 					break;
 				}
-				/* fallthrough */
+				xml_buffer[xml_index] = '-';
+				if (++xml_index >= BUF_SIZE)
+					return XML_ERROR;
+				break;
 			default:
 				if (c > ' ')
 				{
-					xml_buffer[xml_index++] = c;
+					xml_buffer[xml_index] = c;
+					if (++xml_index >= BUF_SIZE)
+						return XML_ERROR;
+					break;
 				}
-				else
-				{
-					xml_buffer[xml_index++] = 0;
-					xml_attr = xml_buffer + xml_index;
-					xml_status = XML_TAG;
-				}
-				if (xml_index >= BUF_SIZE)
+				xml_buffer[xml_index] = 0;
+				if (++xml_index >= BUF_SIZE)
 					return XML_ERROR;
+				xml_attr = xml_buffer + xml_index;
+				xml_attr[0] = 0;
+				xml_value = xml_attr; 
+				xml_status = XML_TAG;
+				return XML_OK;
 			}
 			break;
 
@@ -95,7 +125,18 @@ static int xml_parse(FILE *fp)
 			case '<':
 			case '=':
 			case '"':
+			case '\'':
 				return XML_ERROR;
+			case '/':
+				if (xml_buffer[0] == '/')
+					return XML_ERROR;
+				xml_status == XML_END;
+				break;
+			case '?':
+				if (xml_buffer[0] != '?')
+					return XML_ERROR;
+				xml_status == XML_END;
+				break;
 			default:
 				if (c > ' ')
 				{
@@ -116,6 +157,8 @@ static int xml_parse(FILE *fp)
 				break;
 			case '<':
 			case '"':
+			case '\'':
+			case '/':
 				return XML_ERROR;
 			case '=':
 				xml_buffer[xml_index] = 0;
@@ -160,24 +203,73 @@ static int xml_parse(FILE *fp)
 				break;
 			case '"':
 				xml_value = xml_buffer + xml_index;
-				xml_status = XML_VALUE;
+				xml_status = XML_VALD;
+				break;
+			case '\'':
+				xml_value = xml_buffer + xml_index;
+				xml_status = XML_VALS;
 				break;
 			default:
 				if (c > ' ') return XML_ERROR;
 			}
 			break;
 
-		case XML_VALUE:
+		case XML_VALD:
 			if (c < ' ') return XML_ERROR;
 			if (c == '"')
 			{
 				xml_buffer[xml_index] = 0;
-				xml_status = XML_TAG;
+				xml_status = XML_SPC;
 				return XML_OK;
 			}
 			xml_buffer[xml_index] = c;
 			if (++xml_index >= BUF_SIZE)
 				return XML_ERROR;
+			break;
+
+		case XML_VALS:
+			if (c < ' ') return XML_ERROR;
+			if (c == '\'')
+			{
+				xml_buffer[xml_index] = 0;
+				xml_status = XML_SPC;
+				return XML_OK;
+			}
+			xml_buffer[xml_index] = c;
+			if (++xml_index >= BUF_SIZE)
+				return XML_ERROR;
+			break;
+
+		case XML_SPC:
+			switch (c)
+			{
+			case '>':
+				xml_status = XML_TEXT;
+				break;
+			case '/':
+				if (xml_buffer[0] == '/')
+					return XML_ERROR;
+				xml_status == XML_END;
+				break;
+			case '?':
+				if (xml_buffer[0] != '?')
+					return XML_ERROR;
+				xml_status == XML_END;
+				break;
+
+			default:
+				if (c > ' ') return XML_ERROR;
+				xml_status = XML_TAG;
+			}
+			break;
+
+		case XML_END:
+			if (c == '>')
+			{
+				xml_status = XML_TEXT;
+				break;
+			}
+			if (c > ' ') return XML_ERROR;
 			break;
 
 		case XML_COM:
@@ -212,6 +304,7 @@ static int xml_parse(FILE *fp)
 
 int match_bits(char *str)
 {
+	if (str[0] == '/') str++;
 	if (str[0] != 'b') return 0;
 	unsigned c1 = str[1] - '0';
 	if (c1 > 9) return 0;
@@ -225,19 +318,19 @@ int match_bits(char *str)
 
 int main(int argc, char **argv)
 {
-        char path[PATH_MAX];
-        int ret = 0;
+	char path[PATH_MAX];
+	int ret = 0;
 
-        for (int i = 1; i < argc; i++)
-        {
+	for (int i = 1; i < argc; i++)
+	{
 		snprintf(path, PATH_MAX, "%s.xml", argv[i]);
-                FILE *ifp = fopen(path, "rb");
-                if (!ifp)
-                {
-                        perror(path);
-                        ret = 1;
-                        continue;
-                }
+		FILE *ifp = fopen(path, "rb");
+		if (!ifp)
+		{
+			perror(path);
+			ret = 1;
+			continue;
+		}
 
 		FILE *ofp = fopen(argv[i], "wb");
 		if (!ofp)
@@ -255,11 +348,10 @@ int main(int argc, char **argv)
 		int err;
 		while ((err = xml_parse(ifp)) == XML_OK)
 		{
-			if (strcmp(xml_attr, "value") == 0)
+			int b = match_bits(xml_tag);
+			if (b)
 			{
-				int b = match_bits(xml_tag);
-
-				if (b)
+				if (strcmp(xml_attr, "value") == 0)
 				{
 					int i = 0;
 					sscanf(xml_value, "%i", &i);
@@ -274,15 +366,18 @@ int main(int argc, char **argv)
 						value >>= 8;
 					}
 				}
-				else
+			}
+			else
+			{
+				if (bits)
 				{
-					if (bits)
-					{
-						fputc(value, ofp);
-						bits = 0;
-						value = 0;
-					}
+					fputc(value, ofp);
+					bits = 0;
+					value = 0;
+				}
 
+				if (strcmp(xml_attr, "value") == 0)
+				{
 					if (strcmp(xml_tag, "i8") == 0)
 					{
 						int i = 0;
@@ -312,68 +407,40 @@ int main(int argc, char **argv)
 						fwrite(xml_value, strlen(xml_value)+1, 1, ofp);
 					}
 				}
-			}
-			else if (strcmp(xml_attr, "count") == 0)
-			{
-				if (strcmp(xml_tag, "array") == 0)
+				else if (strcmp(xml_attr, "count") == 0)
 				{
-					if (bits)
+					if (strcmp(xml_tag, "array") == 0)
 					{
-						fputc(value, ofp);
-						bits = 0;
-						value = 0;
+						int i = 0;
+						sscanf(xml_value, "%i", &i);
+						fwrite(&i, 4, 1, ofp);
 					}
-
+				}
+				else if (strcmp(xml_attr, "type") == 0)
+				{
+					if (strcmp(xml_tag, "class") == 0)
+					{
+						fwrite(xml_value, strlen(xml_value)+1, 1, ofp);
+					}
+				}
+				else if (strcmp(xml_attr, "magic") == 0)
+				{
 					int i = 0;
 					sscanf(xml_value, "%i", &i);
 					fwrite(&i, 4, 1, ofp);
 				}
 			}
-			else if (strcmp(xml_attr, "type") == 0)
-			{
-				if (bits)
-				{
-					fputc(value, ofp);
-					bits = 0;
-					value = 0;
-				}
-
-				if (strcmp(xml_tag, "class") == 0)
-				{
-					fwrite(xml_value, strlen(xml_value)+1, 1, ofp);
-				}
-			}
-			else if (strcmp(xml_attr, "magic") == 0)
-			{
-				if (bits)
-				{
-					fputc(value, ofp);
-					bits = 0;
-					value = 0;
-				}
-
-				int i = 0;
-				sscanf(xml_value, "%i", &i);
-				fwrite(&i, 4, 1, ofp);
-			}
 		}
 
-		if (bits)
-		{
-			fputc(value, ofp);
-			bits = 0;
-			value = 0;
-		}
-
-		if (err != XML_EOF)
+		if (bits || err != XML_EOF)
 		{
 			printf("Error parsing file %s\n", path);
 			ret = 1;
 		}
 
 		fclose(ofp);
-                fclose(ifp);
-        }
+		fclose(ifp);
+	}
 
-        return ret;
+	return ret;
 }
