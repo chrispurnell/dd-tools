@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <limits.h>
 
+#ifdef _WIN32
+#define strcasecmp stricmp
+#endif
+
 #define BUF_SIZE 1024
 
 static char xml_buffer[BUF_SIZE];
@@ -323,22 +327,48 @@ int main(int argc, char **argv)
 
 	for (int i = 1; i < argc; i++)
 	{
-		snprintf(path, PATH_MAX, "%s.xml", argv[i]);
-		FILE *ifp = fopen(path, "rb");
-		if (!ifp)
-		{
-			perror(path);
-			ret = 1;
-			continue;
-		}
+		FILE *ifp, *ofp;
+		char *s = strrchr(argv[i], '.');
 
-		FILE *ofp = fopen(argv[i], "wb");
-		if (!ofp)
+		if (s && strcasecmp(s, ".xml") == 0)
 		{
-			perror(argv[i]);
-			fclose(ifp);
-			ret = 1;
-			continue;
+			ifp = fopen(argv[i], "rb");
+			if (!ifp)
+			{
+				perror(path);
+				ret = 1;
+				continue;
+			}
+
+			snprintf(path, PATH_MAX, "%.*s", s - argv[i], argv[i]);
+			ofp = fopen(path, "wb");
+			if (!ofp)
+			{
+				perror(argv[i]);
+				fclose(ifp);
+				ret = 1;
+				continue;
+			}
+		}
+		else
+		{
+			snprintf(path, PATH_MAX, "%s.xml", argv[i]);
+			ifp = fopen(path, "rb");
+			if (!ifp)
+			{
+				perror(path);
+				ret = 1;
+				continue;
+			}
+
+			ofp = fopen(argv[i], "wb");
+			if (!ofp)
+			{
+				perror(argv[i]);
+				fclose(ifp);
+				ret = 1;
+				continue;
+			}
 		}
 
 		int bits = 0;
