@@ -10,28 +10,6 @@ static int read_int(FILE *fp)
 	return i;
 }
 
-static float read_float(FILE *fp)
-{
-	float f = 0;
-	fread(&f, 4, 1, fp);
-	return f;
-}
-
-static char *read_string(FILE *fp)
-{
-	static char buf[256];
-	char c;
-	int i = 0;
-
-	while ((c = fgetc(fp)) >= ' ' && i < 255)
-	{
-		buf[i++] = c;
-	}
-
-	buf[i] = 0;
-	return buf;
-}
-
 static void indent(FILE *fp, int ind)
 {
 	for (int i = 0; i < ind; i++)
@@ -46,31 +24,6 @@ static int print_int(FILE *ifp, FILE *ofp, int ind, const char *name)
 	indent(ofp, ind);
 	fprintf(ofp, "<i32 name=\"%s\" value=\"%d\"/>\n", name, i);
 	return i;
-}
-
-static float print_float(FILE *ifp, FILE *ofp, int ind, const char *name)
-{
-	char str[64];
-	float f = read_float(ifp);
-
-	for (int i = 1; i < 48; i++)
-	{
-		snprintf(str, 64, "%.*f", i, f);
-		if ((float)atof(str) == f)
-			break;
-	}
-
-	indent(ofp, ind);
-	fprintf(ofp, "<f32 name=\"%s\" value=\"%s\"/>\n", name, str);
-	return f;
-}
-
-static char *print_string(FILE *ifp, FILE *ofp, int ind, const char *name)
-{
-	char *str = read_string(ifp);
-	indent(ofp, ind);
-	fprintf(ofp, "<string name=\"%s\" value=\"%s\"/>\n", name, str);
-	return str;
 }
 
 static int atr2xml(FILE *ifp, char *file)

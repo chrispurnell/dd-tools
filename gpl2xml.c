@@ -155,7 +155,7 @@ static void print_vector(FILE *ifp, FILE *ofp, int ind, const char *name)
 	fprintf(ofp, "</vector>\n");
 }
 
-static int print_bits(FILE *ofp, int ind, int bits, const char *name, int value)
+static void print_bits(FILE *ofp, int ind, int bits, const char *name, int value)
 {
 	indent(ofp, ind);
 	fprintf(ofp, "<b%u name=\"%s\" value=\"%d\">\n", bits, name, value);

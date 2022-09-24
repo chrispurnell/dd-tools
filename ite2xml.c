@@ -43,7 +43,7 @@ static int print_int(FILE *ifp, FILE *ofp, int ind, const char *name)
 	return i;
 }
 
-static float print_int_array(FILE *ifp, FILE *ofp, int ind, const char *name, int count)
+static void print_int_array(FILE *ifp, FILE *ofp, int ind, const char *name, int count)
 {
 	indent(ofp, ind);
 	fprintf(ofp, "<array name=\"%s\">\n", name);
@@ -58,7 +58,7 @@ static float print_int_array(FILE *ifp, FILE *ofp, int ind, const char *name, in
 	fprintf(ofp, "</array>\n");
 }
 
-static float print_float_array(FILE *ifp, FILE *ofp, int ind, const char *name, int count)
+static void print_float_array(FILE *ifp, FILE *ofp, int ind, const char *name, int count)
 {
 	char str[64];
 	indent(ofp, ind);

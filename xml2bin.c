@@ -134,12 +134,12 @@ static int xml_parse(FILE *fp)
 			case '/':
 				if (xml_buffer[0] == '/')
 					return XML_ERROR;
-				xml_status == XML_END;
+				xml_status = XML_END;
 				break;
 			case '?':
 				if (xml_buffer[0] != '?')
 					return XML_ERROR;
-				xml_status == XML_END;
+				xml_status = XML_END;
 				break;
 			default:
 				if (c > ' ')
@@ -253,12 +253,12 @@ static int xml_parse(FILE *fp)
 			case '/':
 				if (xml_buffer[0] == '/')
 					return XML_ERROR;
-				xml_status == XML_END;
+				xml_status = XML_END;
 				break;
 			case '?':
 				if (xml_buffer[0] != '?')
 					return XML_ERROR;
-				xml_status == XML_END;
+				xml_status = XML_END;
 				break;
 
 			default:
@@ -340,7 +340,8 @@ int main(int argc, char **argv)
 				continue;
 			}
 
-			snprintf(path, PATH_MAX, "%.*s", s - argv[i], argv[i]);
+			int n = s - argv[i];
+			snprintf(path, PATH_MAX, "%.*s", n, argv[i]);
 			ofp = fopen(path, "wb");
 			if (!ofp)
 			{
