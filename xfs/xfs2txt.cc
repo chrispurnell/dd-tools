@@ -65,7 +65,7 @@ bool XFS::build_xml(Buffer *buf, xml::node *node, unsigned index)
 		for (unsigned j = 0; j < count; j++)
 		{
 			xml::node *n = np->add_child(tname);
-			if (count == 1) n->add_attr("name", fname);
+			if (!is_array) n->add_attr("name", fname);
 
 			switch (p->type)
 			{
