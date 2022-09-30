@@ -19,15 +19,14 @@ static char *xml_value;
 #define XML_NAME  1
 #define XML_TAG   2
 #define XML_ATTR  3
-#define XML_PREEQ 4
-#define XML_EQ    5
-#define XML_VALD  6
-#define XML_VALS  7
-#define XML_SPC   8
-#define XML_END   9
-#define XML_COM   10
-#define XML_COM1  11
-#define XML_COM2  12
+#define XML_EQ    4
+#define XML_VALD  5
+#define XML_VALS  6
+#define XML_SPC   7
+#define XML_END   8
+#define XML_COM   9
+#define XML_COM1  10
+#define XML_COM2  11
 
 #define XML_OK    0
 #define XML_ERROR 1
@@ -171,31 +170,14 @@ static int xml_parse(FILE *fp)
 					return XML_ERROR;
 				break;
 			default:
-				if (c > ' ')
+				if (c <= ' ')
 				{
-					xml_buffer[xml_index] = c;
+					xml_status = XML_TAG;
+					break;
 				}
-				else
-				{
-					xml_buffer[xml_index] = 0;
-					xml_status = XML_PREEQ;
-				}
+				xml_buffer[xml_index] = c;
 				if (++xml_index >= BUF_SIZE)
 					return XML_ERROR;
-			}
-			break;
-
-		case XML_PREEQ:
-			switch (c)
-			{
-			case '>':
-				xml_status = XML_TEXT;
-				break;
-			case '=':
-				xml_status = XML_EQ;
-				break;
-			default:
-				if (c > ' ') return XML_ERROR;
 			}
 			break;
 
