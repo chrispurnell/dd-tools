@@ -313,7 +313,7 @@ namespace xml
 		}
 
 		long toInt() { return strtoul(m_value, NULL, 0); }
-		float toFloat() { return strtod(m_value, NULL); }
+		float toFloat() { return strtof(m_value, NULL); }
 	};
 
 	class node
@@ -383,7 +383,7 @@ namespace xml
 			for (int i = 1; i < 48; i++)
 			{
 				snprintf(str, 64, "%.*f", i, value);
-				if ((float)atof(str) == value)
+				if (strtof(str, NULL) == value)
 					break;
 			}
 			attribute::new_attr(name, str, &m_attr);

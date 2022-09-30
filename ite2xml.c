@@ -30,7 +30,7 @@ static void float2str(char *str, float f)
 	for (int i = 1; i < 48; i++)
 	{
 		snprintf(str, 64, "%.*f", i, f);
-		if ((float)atof(str) == f)
+		if (strtof(str, NULL) == f)
 			break;
 	}
 }

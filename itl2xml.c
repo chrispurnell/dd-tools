@@ -66,7 +66,7 @@ static float print_float(FILE *ifp, FILE *ofp, int ind, const char *name)
 	for (int i = 1; i < 48; i++)
 	{
 		snprintf(str, 64, "%.*f", i, f);
-		if ((float)atof(str) == f)
+		if (strtof(str, NULL) == f)
 			break;
 	}
 

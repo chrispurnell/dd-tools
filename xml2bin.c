@@ -366,8 +366,7 @@ int main(int argc, char **argv)
 			{
 				if (strcmp(xml_attr, "value") == 0)
 				{
-					int i = 0;
-					sscanf(xml_value, "%i", &i);
+					int i = strtoul(xml_value, NULL, 0);
 					i &= (1 << b) - 1;
 					value |= i << bits;
 					bits += b;
@@ -393,26 +392,22 @@ int main(int argc, char **argv)
 				{
 					if (strcmp(xml_tag, "i8") == 0)
 					{
-						int i = 0;
-						sscanf(xml_value, "%i", &i);
+						int i = strtoul(xml_value, NULL, 0);
 						fputc(i, ofp);
 					}
 					else if (strcmp(xml_tag, "i16") == 0)
 					{
-						int i = 0;
-						sscanf(xml_value, "%i", &i);
+						int i = strtoul(xml_value, NULL, 0);
 						fwrite(&i, 2, 1, ofp);
 					}
 					else if (strcmp(xml_tag, "i32") == 0)
 					{
-						int i = 0;
-						sscanf(xml_value, "%i", &i);
+						int i = strtoul(xml_value, NULL, 0);
 						fwrite(&i, 4, 1, ofp);
 					}
 					else if (strcmp(xml_tag, "f32") == 0)
 					{
-						float f = 0;
-						sscanf(xml_value, "%f", &f);
+						float f = strtof(xml_value, NULL);
 						fwrite(&f, 4, 1, ofp);
 					}
 					else if (strcmp(xml_tag, "string") == 0)
@@ -424,8 +419,7 @@ int main(int argc, char **argv)
 				{
 					if (strcmp(xml_tag, "array") == 0)
 					{
-						int i = 0;
-						sscanf(xml_value, "%i", &i);
+						int i = strtoul(xml_value, NULL, 0);
 						fwrite(&i, 4, 1, ofp);
 					}
 				}
@@ -438,8 +432,7 @@ int main(int argc, char **argv)
 				}
 				else if (strcmp(xml_attr, "magic") == 0)
 				{
-					int i = 0;
-					sscanf(xml_value, "%i", &i);
+					int i = strtoul(xml_value, NULL, 0);
 					fwrite(&i, 4, 1, ofp);
 				}
 			}
