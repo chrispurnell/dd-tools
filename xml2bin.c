@@ -1,3 +1,5 @@
+#include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
@@ -366,9 +368,9 @@ int main(int argc, char **argv)
 			{
 				if (strcmp(xml_attr, "value") == 0)
 				{
-					int i = strtoul(xml_value, NULL, 0);
-					i &= (1 << b) - 1;
-					value |= i << bits;
+					unsigned u = strtoul(xml_value, NULL, 0);
+					u &= (1 << b) - 1;
+					value |= u << bits;
 					bits += b;
 
 					while (bits >= 8)
@@ -392,18 +394,18 @@ int main(int argc, char **argv)
 				{
 					if (strcmp(xml_tag, "i8") == 0)
 					{
-						int i = strtoul(xml_value, NULL, 0);
-						fputc(i, ofp);
+						uint8_t i8 = strtoul(xml_value, NULL, 0);
+						fputc(i8, ofp);
 					}
 					else if (strcmp(xml_tag, "i16") == 0)
 					{
-						int i = strtoul(xml_value, NULL, 0);
-						fwrite(&i, 2, 1, ofp);
+						uint16_t i16 = strtoul(xml_value, NULL, 0);
+						fwrite(&i16, 2, 1, ofp);
 					}
 					else if (strcmp(xml_tag, "i32") == 0)
 					{
-						int i = strtoul(xml_value, NULL, 0);
-						fwrite(&i, 4, 1, ofp);
+						uint32_t i32 = strtoul(xml_value, NULL, 0);
+						fwrite(&i32, 4, 1, ofp);
 					}
 					else if (strcmp(xml_tag, "f32") == 0)
 					{
@@ -419,8 +421,8 @@ int main(int argc, char **argv)
 				{
 					if (strcmp(xml_tag, "array") == 0)
 					{
-						int i = strtoul(xml_value, NULL, 0);
-						fwrite(&i, 4, 1, ofp);
+						uint32_t i32 = strtoul(xml_value, NULL, 0);
+						fwrite(&i32, 4, 1, ofp);
 					}
 				}
 				else if (strcmp(xml_attr, "type") == 0)
@@ -432,8 +434,8 @@ int main(int argc, char **argv)
 				}
 				else if (strcmp(xml_attr, "magic") == 0)
 				{
-					int i = strtoul(xml_value, NULL, 0);
-					fwrite(&i, 4, 1, ofp);
+					uint32_t i32 = strtoul(xml_value, NULL, 0);
+					fwrite(&i32, 4, 1, ofp);
 				}
 			}
 		}
