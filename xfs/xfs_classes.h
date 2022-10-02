@@ -542,14 +542,3 @@ const XFS::ClassMap XFS::ClassNames[] =
 	{ 2144162187, "rCharacterEditPreset::HeadPresetInputItem" },
 	{ 0, NULL }
 };
-
-const char *XFS::hash2name(uint32_t hash)
-{
-	for (unsigned i = 0; ClassNames[i].name; i++)
-	{
-		if (ClassNames[i].hash == hash)
-			return ClassNames[i].name;
-	}
-
-	return NULL;
-}

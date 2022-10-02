@@ -100,17 +100,6 @@ unsigned calc_hash(const char *ptr)
 	return val & 0x7FFFFFFF;
 }
 
-unsigned XFS::name2type(const char *name)
-{
-	for (unsigned i = 0; i < TYPE_END; i++)
-	{
-		if (strcmp(TypeNames[i], name) == 0)
-			return i;
-	}
-
-	return 0;
-}
-
 bool XFS::write_xml(File *fp, xml::node *node)
 {
 	int index = -1;

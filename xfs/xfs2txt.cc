@@ -18,12 +18,6 @@ namespace {
 #include "xfs_classes.h"
 #include "xfs_fields.h"
 
-const char *XFS::type2name(unsigned type)
-{
-	if (type < TYPE_END) return TypeNames[type];
-	return "custom";
-}
-
 bool XFS::build_xml(Buffer *buf, xml::node *node, unsigned index)
 {
 	if (index > header.objDataNum)

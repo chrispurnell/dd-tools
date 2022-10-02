@@ -315,22 +315,3 @@ const XFS::FieldMapList XFS::FieldNames[] =
 	} },
 	{ 0, NULL }
 };
-
-const char *XFS::fieldname(uint32_t hash, const char *name)
-{
-	for (unsigned i = 0; FieldNames[i].map; i++)
-	{
-		if (FieldNames[i].hash == hash)
-		{
-			FieldMap *map = FieldNames[i].map;
-
-			for (unsigned j = 0; map[j].name; j++)
-			{
-				if (strcmp(map[j].name, name) == 0)
-					return map[j].orig;
-			}
-		}
-	}
-
-	return name;
-}

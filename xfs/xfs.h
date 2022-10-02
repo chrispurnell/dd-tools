@@ -248,11 +248,49 @@ private:
 	HEADER header;
 	OBJECTDATA **objs;
 
-	static uint32_t name2hash(const char *);
-	static const char *type2name(unsigned);
-	static const char *hash2name(uint32_t);
-	static const char *fieldname(uint32_t, const char *);
-	static unsigned name2type(const char *);
+	static const char *type2name(unsigned type)
+	{
+		if (type < TYPE_END) return TypeNames[type];
+		return "custom";
+	}
+
+	static unsigned name2type(const char *name)
+	{
+		for (unsigned i = 0; i < TYPE_END; i++)
+		{
+			if (strcmp(TypeNames[i], name) == 0)
+				return i;
+		}
+		return 0;
+	}
+
+	static const char *hash2name(uint32_t hash)
+	{
+		for (unsigned i = 0; ClassNames[i].name; i++)
+		{
+			if (ClassNames[i].hash == hash)
+				return ClassNames[i].name;
+		}
+		return NULL;
+	}
+
+	static const char *fieldname(uint32_t hash, const char *name)
+	{
+		for (unsigned i = 0; FieldNames[i].map; i++)
+		{
+			if (FieldNames[i].hash == hash)
+			{
+				FieldMap *map = FieldNames[i].map;
+
+				for (unsigned j = 0; map[j].name; j++)
+				{
+					if (strcmp(map[j].name, name) == 0)
+						return map[j].orig;
+				}
+			}
+		}
+		return name;
+	}
 
 	XFS()
 	{
