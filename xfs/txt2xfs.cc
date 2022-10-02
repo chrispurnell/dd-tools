@@ -130,13 +130,33 @@ bool XFS::write_xml(File *fp, xml::node *node)
 	long offset = ftell(fp->fp);
 	fp->write32(0);
 
-	for (xml::node *np = node->child(); np; np = np->next())
+	OBJECTDATA *o = objs[index];
+	xml::node *np = node->child();
+
+	for (unsigned i = 0; i < o->num; i++)
 	{
-		unsigned count = 0;
+		PARAMETER *p = o->param + i;
+		const char *tname = type2name(p->type);
+
+		if (!np)
+		{
+			printf("Error: %s expected.\n", tname);
+			return false;
+		}
+
+		unsigned count = 1;
 		xml::node *n = np;
 
-		if (strcmp(np->name(), "array") == 0)
+		if (p->flags & 0x20)
 		{
+			if (strcmp(np->name(), "array"))
+			{
+				printf("Error: array expected, found: %s\n", np->name());
+				return false;
+			}
+
+			count = 0;
+
 			for (n = np->child(); n; n = n->next())
 			{
 				count++;
@@ -144,16 +164,18 @@ bool XFS::write_xml(File *fp, xml::node *node)
 
 			n = np->child();
 		}
-		else
-		{
-			count = 1;
-		}
 
 		fp->write32(count);
 
-		for (unsigned i = 0; i < count; i++)
+		for (unsigned j = 0; j < count; j++)
 		{
-			switch (name2type(n->name()))
+			if (strcmp(n->name(), tname))
+			{
+				printf("Error: %s expected, found: %s\n", tname, n->name());
+				return false;
+			}
+
+			switch (p->type)
 			{
 			case TYPE_CLASS:
 			case TYPE_CLASSREF:
@@ -294,6 +316,14 @@ bool XFS::write_xml(File *fp, xml::node *node)
 
 			n = n->next();
 		}
+
+		np = np->next();
+	}
+
+	if (np)
+	{
+		printf("Error: Unexpected: %s\n", np->name());
+		return false;
 	}
 
 	long end = ftell(fp->fp);
