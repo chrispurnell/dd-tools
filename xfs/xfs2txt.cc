@@ -92,7 +92,7 @@ bool XFS::build_xml(Buffer *buf, xml::node *node, unsigned index)
 				n->add_attr("value", buf->u32());
 				break;
 			case TYPE_S8:
-				n->add_attr("value", buf->u8());
+				n->add_attr("value", buf->s8());
 				break;
 			case TYPE_S16:
 				n->add_attr("value", buf->s16());
