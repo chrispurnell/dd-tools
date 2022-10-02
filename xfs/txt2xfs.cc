@@ -214,7 +214,7 @@ bool XFS::write_xml(File *fp, xml::node *node)
 				fp->writefa(n->find_attr("x"));
 				fp->writefa(n->find_attr("y"));
 				fp->writefa(n->find_attr("z"));
-				fp->write32(0);
+				fp->writefa(n->find_attr("pad"));
 				break;
 			case TYPE_VECTOR4:
 				fp->writefa(n->find_attr("x"));
@@ -241,25 +241,25 @@ bool XFS::write_xml(File *fp, xml::node *node)
 				fp->writefa(n->find_attr("x0"));
 				fp->writefa(n->find_attr("y0"));
 				fp->writefa(n->find_attr("z0"));
-				fp->write32(0);
+				fp->writefa(n->find_attr("pad0"));
 				fp->writefa(n->find_attr("x1"));
 				fp->writefa(n->find_attr("y1"));
 				fp->writefa(n->find_attr("z1"));
-				fp->write32(0);
+				fp->writefa(n->find_attr("pad1"));
 				break;
 			case TYPE_CYLINDER:
 				fp->writefa(n->find_attr("x0"));
 				fp->writefa(n->find_attr("y0"));
 				fp->writefa(n->find_attr("z0"));
-				fp->write32(0);
+				fp->writefa(n->find_attr("pad0"));
 				fp->writefa(n->find_attr("x1"));
 				fp->writefa(n->find_attr("y1"));
 				fp->writefa(n->find_attr("z1"));
-				fp->write32(0);
+				fp->writefa(n->find_attr("pad1"));
 				fp->writefa(n->find_attr("r"));
-				fp->write32(0);
-				fp->writefa(n->find_attr("s"));
-				fp->write32(0);
+				fp->writefa(n->find_attr("pad2"));
+				fp->writefa(n->find_attr("pad3"));
+				fp->writefa(n->find_attr("pad4"));
 				break;
 			case TYPE_RANGEF:
 				fp->writefa(n->find_attr("s"));

@@ -60,6 +60,7 @@ bool XFS::build_xml(Buffer *buf, xml::node *node, unsigned index)
 		{
 			xml::node *n = np->add_child(tname);
 			if (!is_array) n->add_attr("name", fname);
+			float f;
 
 			switch (p->type)
 			{
@@ -129,7 +130,7 @@ bool XFS::build_xml(Buffer *buf, xml::node *node, unsigned index)
 				n->add_attr("x", buf->f32());
 				n->add_attr("y", buf->f32());
 				n->add_attr("z", buf->f32());
-				buf->skip(4);
+				if ((f = buf->f32()) != 0) n->add_attr("pad", f);
 				break;
 			case TYPE_VECTOR4:
 				n->add_attr("x", buf->f32());
@@ -156,25 +157,25 @@ bool XFS::build_xml(Buffer *buf, xml::node *node, unsigned index)
 				n->add_attr("x0", buf->f32());
 				n->add_attr("y0", buf->f32());
 				n->add_attr("z0", buf->f32());
-				buf->skip(4);
+				if ((f = buf->f32()) != 0) n->add_attr("pad0", f);
 				n->add_attr("x1", buf->f32());
 				n->add_attr("y1", buf->f32());
 				n->add_attr("z1", buf->f32());
-				buf->skip(4);
+				if ((f = buf->f32()) != 0) n->add_attr("pad1", f);
 				break;
 			case TYPE_CYLINDER:
 				n->add_attr("x0", buf->f32());
 				n->add_attr("y0", buf->f32());
 				n->add_attr("z0", buf->f32());
-				buf->skip(4);
+				if ((f = buf->f32()) != 0) n->add_attr("pad0", f);
 				n->add_attr("x1", buf->f32());
 				n->add_attr("y1", buf->f32());
 				n->add_attr("z1", buf->f32());
-				buf->skip(4);
+				if ((f = buf->f32()) != 0) n->add_attr("pad1", f);
 				n->add_attr("r", buf->f32());
-				buf->skip(4);
-				n->add_attr("s", buf->f32());
-				buf->skip(4);
+				if ((f = buf->f32()) != 0) n->add_attr("pad2", f);
+				if ((f = buf->f32()) != 0) n->add_attr("pad3", f);
+				if ((f = buf->f32()) != 0) n->add_attr("pad4", f);
 				break;
 			case TYPE_RANGEF:
 				n->add_attr("s", buf->f32());
