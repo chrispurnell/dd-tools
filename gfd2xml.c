@@ -172,18 +172,18 @@ static int gfd2xml(FILE *ifp, char *file)
 		indent(ofp, 2);
 		fprintf(ofp, "<class>\n");
 
-		print_byte(ifp, ofp, 3, "ch0");
-		print_byte(ifp, ofp, 3, "ch1");
-		print_short(ifp, ofp, 3, "ch2");
-		print_short(ifp, ofp, 3, "ch3");
-		print_short(ifp, ofp, 3, "ch4");
+		print_byte(ifp, ofp, 3, "texture");
+		print_byte(ifp, ofp, 3, "unknown1");
+		print_short(ifp, ofp, 3, "unknown2");
+		print_short(ifp, ofp, 3, "x");
+		print_short(ifp, ofp, 3, "y");
 
 		int n = read_int(ifp);
-		print_bits(ofp, 3, 12, "ch5", n);
-		print_bits(ofp, 3, 12, "ch6", n >> 12);
-		print_bits(ofp, 3, 8, "ch7", n >> 24);
+		print_bits(ofp, 3, 12, "width", n);
+		print_bits(ofp, 3, 12, "height", n >> 12);
+		print_bits(ofp, 3, 8, "pad", n >> 24);
 
-		print_hex(ifp, ofp, 3, "ch8");
+		print_hex(ifp, ofp, 3, "codepoint");
 
 		indent(ofp, 2);
 		fprintf(ofp, "</class>\n");
