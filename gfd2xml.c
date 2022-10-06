@@ -174,7 +174,7 @@ static int gfd2xml(FILE *ifp, char *file)
 
 		print_byte(ifp, ofp, 3, "texture");
 		print_byte(ifp, ofp, 3, "decent");
-		print_short(ifp, ofp, 3, "unknown");
+		print_short(ifp, ofp, 3, "advance");
 		print_short(ifp, ofp, 3, "x");
 		print_short(ifp, ofp, 3, "y");
 
