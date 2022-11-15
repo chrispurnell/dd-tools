@@ -288,7 +288,7 @@ static void print_npc(FILE *ifp, FILE *ofp, int ind)
 
 	print_byte  (ifp, ofp, ind, "mWaitParamExist");
 	indent(ofp, ind);
-	fprintf(ofp, "<clss name=\"mWaitParam\">\n");
+	fprintf(ofp, "<class name=\"mWaitParam\">\n");
 	int in = ind + 1;
 	print_int   (ifp, ofp, in, "Type");
 	print_int   (ifp, ofp, in, "Flag");
