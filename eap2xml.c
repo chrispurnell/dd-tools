@@ -234,7 +234,7 @@ static int eap2xml(FILE *ifp, char *file)
 		fprintf(ofp, "</class>\n");
 	}
 	indent(ofp, 1);
-	fprintf(ofp, "</array>");
+	fprintf(ofp, "</array>\n");
 
 	fprintf(ofp, "</lot>\n");
 	return 0;
