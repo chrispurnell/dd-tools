@@ -85,7 +85,7 @@ static int ite2xml(FILE *ifp, char *file)
 	char path[PATH_MAX];
 	snprintf(path, PATH_MAX, "%s.xml", file);
 	FILE *ofp = fopen(path, "w");
-	if(!ofp)
+	if (!ofp)
 	{
 		perror(path);
 		return 1;

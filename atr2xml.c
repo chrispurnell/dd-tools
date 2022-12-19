@@ -37,7 +37,7 @@ static int atr2xml(FILE *ifp, char *file)
 	char path[PATH_MAX];
 	snprintf(path, PATH_MAX, "%s.xml", file);
 	FILE *ofp = fopen(path, "w");
-	if(!ofp)
+	if (!ofp)
 	{
 		perror(path);
 		return 1;
@@ -62,11 +62,11 @@ static int atr2xml(FILE *ifp, char *file)
 		fprintf(ofp, "<u32 name=\"mArmorId\">\n");
 		int n = read_int(ifp);
 		indent(ofp, 4);
-                fprintf(ofp, "<b24 value=\"%d\"/>\n", (n << 8) >> 8);
-                indent(ofp, 4);
-                fprintf(ofp, "<b8 value=\"%d\"/>\n", n >> 24);
-                indent(ofp, 3);
-                fprintf(ofp, "</i32>\n");
+		fprintf(ofp, "<b24 value=\"%d\"/>\n", (n << 8) >> 8);
+		indent(ofp, 4);
+		fprintf(ofp, "<b8 value=\"%d\"/>\n", n >> 24);
+		indent(ofp, 3);
+		fprintf(ofp, "</i32>\n");
 
 		print_int(ifp, ofp, 3, "mSoundPri");
 		print_int(ifp, ofp, 3, "mSoundType");

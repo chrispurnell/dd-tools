@@ -13,7 +13,7 @@ static int read_int(FILE *fp)
 static char *read_string(FILE *fp)
 {
 	static char buf[256];
-	char c;
+	int c;
 	int i = 0;
 	
 	while ((c = fgetc(fp)) >= ' ' && i < 255)
@@ -43,10 +43,10 @@ static int print_int(FILE *ifp, FILE *ofp, int ind, const char *name)
 
 static char *print_string(FILE *ifp, FILE *ofp, int ind, const char *name)
 {
-        char *str = read_string(ifp);
-        indent(ofp, ind);
-        fprintf(ofp, "<string name=\"%s\" value=\"%s\"/>\n", name, str);
-        return str;
+	char *str = read_string(ifp);
+	indent(ofp, ind);
+	fprintf(ofp, "<string name=\"%s\" value=\"%s\"/>\n", name, str);
+	return str;
 }
 
 static int qct2xml(FILE *ifp, char *file)

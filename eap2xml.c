@@ -52,10 +52,10 @@ static void float2str(char *str, float f)
 
 static int print_byte(FILE *ifp, FILE *ofp, int ind, const char *name)
 {
-        char i = fgetc(ifp);
-        indent(ofp, ind);
-        fprintf(ofp, "<i8 name=\"%s\" value=\"%d\"/>\n", name, i);
-        return i;
+	char i = fgetc(ifp);
+	indent(ofp, ind);
+	fprintf(ofp, "<i8 name=\"%s\" value=\"%d\"/>\n", name, i);
+	return i;
 }
 
 static int print_short(FILE *ifp, FILE *ofp, int ind, const char *name)
@@ -201,7 +201,7 @@ static int eap2xml(FILE *ifp, char *file)
 		print_int(ifp, ofp, 3, "CmcOrderTag");
 
 		indent(ofp, 3);
-                fprintf(ofp, "<class name=\"ActionParam\">\n");
+		fprintf(ofp, "<class name=\"ActionParam\">\n");
 
 		print_int_array(ifp, ofp, 4, "StudyID", 8);
 		print_int_array(ifp, ofp, 4, "NoStudyID", 8);
@@ -225,10 +225,10 @@ static int eap2xml(FILE *ifp, char *file)
 		print_int_array(ifp, ofp, 4, "FreeS32", 4);
 		print_float_array(ifp, ofp, 4, "FreeF32", 4);
 		print_flag_array(ifp, ofp, 4, "SetOnFlag", 2);
-                print_flag_array(ifp, ofp, 4, "SetffFlag", 2);
+		print_flag_array(ifp, ofp, 4, "SetffFlag", 2);
 
 		indent(ofp, 3);
-                fprintf(ofp, "</class>\n");
+		fprintf(ofp, "</class>\n");
 
 		indent(ofp, 2);
 		fprintf(ofp, "</class>\n");

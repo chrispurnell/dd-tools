@@ -46,7 +46,7 @@ static float read_float(FILE *fp)
 static char *read_string(FILE *fp)
 {
 	static char buf[256];
-	char c;
+	int c;
 	int i = 0;
 	
 	while ((c = fgetc(fp)) >= ' ' && i < 255)
@@ -226,7 +226,7 @@ static int gpl2xml(FILE *ifp, char *file)
 	char path[PATH_MAX];
 	snprintf(path, PATH_MAX, "%s.xml", file);
 	FILE *ofp = fopen(path, "w");
-	if(!ofp)
+	if (!ofp)
 	{
 		perror(path);
 		return 1;

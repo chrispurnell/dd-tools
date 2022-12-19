@@ -27,10 +27,10 @@ static void indent(FILE *fp, int ind)
 
 static int print_byte(FILE *ifp, FILE *ofp, int ind, const char *name)
 {
-        char i = fgetc(ifp);
-        indent(ofp, ind);
-        fprintf(ofp, "<i8 name=\"%s\" value=\"%d\"/>\n", name, i);
-        return i;
+	char i = fgetc(ifp);
+	indent(ofp, ind);
+	fprintf(ofp, "<i8 name=\"%s\" value=\"%d\"/>\n", name, i);
+	return i;
 }
 
 static int print_short(FILE *ifp, FILE *ofp, int ind, const char *name)
@@ -51,28 +51,28 @@ static int print_int(FILE *ifp, FILE *ofp, int ind, const char *name)
 
 static void print_int_array(FILE *ifp, FILE *ofp, int ind, const char *name, int count)
 {
-        indent(ofp, ind);
-        fprintf(ofp, "<array name=\"%s\">\n", name);
+	indent(ofp, ind);
+	fprintf(ofp, "<array name=\"%s\">\n", name);
 
-        for (int i = 0; i < count; i++)
-        {
-                indent(ofp, ind + 1);
-                fprintf(ofp, "<i32 index=\"%d\" value=\"%d\"/>\n", i, read_int(ifp));
-        }
+	for (int i = 0; i < count; i++)
+	{
+		indent(ofp, ind + 1);
+		fprintf(ofp, "<i32 index=\"%d\" value=\"%d\"/>\n", i, read_int(ifp));
+	}
 
-        indent(ofp, ind);
-        fprintf(ofp, "</array>\n");
+	indent(ofp, ind);
+	fprintf(ofp, "</array>\n");
 }
 
 static void print_flag_array(FILE *ifp, FILE *ofp, int ind, const char *name, int count)
 {
-        indent(ofp, ind);
-        fprintf(ofp, "<array name=\"%s\">\n", name);
+	indent(ofp, ind);
+	fprintf(ofp, "<array name=\"%s\">\n", name);
 
-        int in = ind + 1;
+	int in = ind + 1;
 
-        for (int i = 0; i < count; i++)
-        {
+	for (int i = 0; i < count; i++)
+	{
 		indent(ofp, in);
 		fprintf(ofp, "<class>\n");
 
@@ -82,10 +82,10 @@ static void print_flag_array(FILE *ifp, FILE *ofp, int ind, const char *name, in
 
 		indent(ofp, in);
 		fprintf(ofp, "</class>\n");
-        }
+	}
 
-        indent(ofp, ind);
-        fprintf(ofp, "</array>\n");
+	indent(ofp, ind);
+	fprintf(ofp, "</array>\n");
 }
 
 static int sap2xml(FILE *ifp, char *file)
@@ -98,16 +98,16 @@ static int sap2xml(FILE *ifp, char *file)
 
 	char path[PATH_MAX];
 	snprintf(path, PATH_MAX, "%s.xml", file);
-        FILE *ofp = fopen(path, "w");
-        if(!ofp)
-        {
-                perror(path);
-                return 1;
-        }
+	FILE *ofp = fopen(path, "w");
+	if (!ofp)
+	{
+		perror(path);
+		return 1;
+	}
 
 	fprintf(ofp, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
-        fprintf(ofp, "<sap magic=\"0x5F504153\">\n");
-        print_short(ifp, ofp, 1, "version");
+	fprintf(ofp, "<sap magic=\"0x5F504153\">\n");
+	print_short(ifp, ofp, 1, "version");
 	int paramNum = print_short(ifp, ofp, 1, "paramNum");
 
 	indent(ofp, 1);
@@ -165,9 +165,9 @@ static int sap2xml(FILE *ifp, char *file)
 	indent(ofp, 1);
 	fprintf(ofp, "</array>\n");
 
-        fprintf(ofp, "</sap>\n");
-        fclose(ofp);
-        return 0;
+	fprintf(ofp, "</sap>\n");
+	fclose(ofp);
+	return 0;
 }
 
 int main(int argc, char **argv)
