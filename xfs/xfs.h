@@ -240,6 +240,15 @@ private:
 			return s;
 		}
 
+		bool peek()
+		{
+			uint32_t i;
+			memcpy(&i, data + pos, 4);
+			if (i) return true;
+			pos += 4;
+			return false;
+		}
+
 		void skip(unsigned o) { pos += o; }
 		void seek(unsigned o) { pos = o; }
 		char *get(unsigned o) { return data + o; }
