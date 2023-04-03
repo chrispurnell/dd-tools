@@ -126,7 +126,7 @@ static void print_float_array(FILE *ifp, FILE *ofp, int ind, const char *name, i
 	{
 		float2str(str, read_float(ifp));
 		indent(ofp, in);
-		fprintf(ofp, "<i32 index=\"%d\" value=\"%s\"/>\n", i, str);
+		fprintf(ofp, "<f32 index=\"%d\" value=\"%s\"/>\n", i, str);
 	}
 
 	indent(ofp, ind);
@@ -178,7 +178,7 @@ static int eap2xml(FILE *ifp, char *file)
 	fprintf(ofp, "<eap magic=\"0x5F504145\">\n");
 	print_short(ifp, ofp, 1, "version");
 	int num = print_short(ifp, ofp, 1, "paramNum");
-	print_short(ifp, ofp, 1, "studyDisableNum");
+	int snum = print_short(ifp, ofp, 1, "studyDisableNum");
 	print_byte_array(ifp, ofp, 1, "unitTargetNum", 30);
 
 	indent(ofp, 1);
@@ -229,6 +229,27 @@ static int eap2xml(FILE *ifp, char *file)
 
 		indent(ofp, 3);
 		fprintf(ofp, "</class>\n");
+
+		indent(ofp, 2);
+		fprintf(ofp, "</class>\n");
+	}
+	indent(ofp, 1);
+	fprintf(ofp, "</array>\n");
+
+	indent(ofp, 1);
+	fprintf(ofp, "<array name=\"mpStudyDisableAttrAdrs\">\n");
+	for (int i = 0; i < snum; i++)
+	{
+		indent(ofp, 2);
+		fprintf(ofp, "<class>\n");
+
+		print_int(ifp, ofp, 3, "ActionStatus");
+		print_int(ifp, ofp, 3, "BaseStatus");
+		print_int(ifp, ofp, 3, "StudyLvMin");
+		print_int(ifp, ofp, 3, "StudyLvMax");
+		print_int(ifp, ofp, 3, "DisableElement");
+		print_int(ifp, ofp, 3, "DisableAtkAttr");
+		print_int(ifp, ofp, 3, "DisableUse");
 
 		indent(ofp, 2);
 		fprintf(ofp, "</class>\n");
