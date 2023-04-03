@@ -407,6 +407,11 @@ int main(int argc, char **argv)
 						uint32_t i32 = strtoul(xml_value, NULL, 0);
 						fwrite(&i32, 4, 1, ofp);
 					}
+					else if (strcmp(xml_tag, "i64") == 0)
+					{
+						uint64_t i64 = strtoull(xml_value, NULL, 0);
+						fwrite(&i64, 8, 1, ofp);
+					}
 					else if (strcmp(xml_tag, "f32") == 0)
 					{
 						float f = strtof(xml_value, NULL);
