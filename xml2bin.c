@@ -290,7 +290,7 @@ static int xml_parse(FILE *fp)
 	return XML_EOF;
 }
 
-int match_bits(char *str)
+static int match_bits(char *str)
 {
 	if (str[0] == '/') str++;
 	if (str[0] != 'b') return 0;
