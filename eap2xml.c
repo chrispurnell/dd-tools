@@ -175,7 +175,7 @@ static int eap2xml(FILE *ifp, char *file)
 	}
 
 	fprintf(ofp, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
-	fprintf(ofp, "<lot magic=\"0x5F504145\">\n");
+	fprintf(ofp, "<eap magic=\"0x5F504145\">\n");
 	print_short(ifp, ofp, 1, "version");
 	int num = print_short(ifp, ofp, 1, "paramNum");
 	print_short(ifp, ofp, 1, "studyDisableNum");
@@ -236,7 +236,7 @@ static int eap2xml(FILE *ifp, char *file)
 	indent(ofp, 1);
 	fprintf(ofp, "</array>\n");
 
-	fprintf(ofp, "</lot>\n");
+	fprintf(ofp, "</eap>\n");
 	return 0;
 }
 
