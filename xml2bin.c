@@ -430,13 +430,6 @@ int main(int argc, char **argv)
 						fwrite(&i32, 4, 1, ofp);
 					}
 				}
-				else if (strcmp(xml_attr, "type") == 0)
-				{
-					if (strcmp(xml_tag, "class") == 0)
-					{
-						fwrite(xml_value, strlen(xml_value)+1, 1, ofp);
-					}
-				}
 				else if (strcmp(xml_attr, "magic") == 0)
 				{
 					uint32_t i32 = strtoul(xml_value, NULL, 0);

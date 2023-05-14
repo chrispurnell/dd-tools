@@ -201,10 +201,11 @@ static void print_target(FILE *ifp, FILE *ofp, int ind)
 	if (!print_int(ifp, ofp, ind, "mpTarget"))
 		return;
 
-	char *str = read_string(ifp);
 	indent(ofp, ind);
-	fprintf(ofp, "<class type=\"%s\">\n", str);
+	fprintf(ofp, "<class>\n");
+
 	int in = ind + 1;
+	char *str = print_string(ifp, ofp, in, "class");
 
 	if (strcmp(str, "cAISensorTargetStageAction") == 0)
 	{
