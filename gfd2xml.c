@@ -170,7 +170,7 @@ static int gfd2xml(FILE *ifp, char *file)
 	for (int i = 0; i < mCharNum; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_byte(ifp, ofp, 3, "texture");
 		print_byte(ifp, ofp, 3, "decent");

@@ -71,7 +71,7 @@ static int aor2xml(FILE *ifp, char *file)
 	for (int i = 0; i < i1; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_int(ifp, ofp, 3, "mModelId");
 
@@ -82,7 +82,7 @@ static int aor2xml(FILE *ifp, char *file)
 		for (int j = 0; j < i2; j++)
 		{
 			indent(ofp, 4);
-			fprintf(ofp, "<class>\n");
+			fprintf(ofp, "<class index=\"%d\">\n", j);
 			
 			print_short(ifp, ofp, 5, "mChkModelId");
 			print_short(ifp, ofp, 5, "mPartsNo");

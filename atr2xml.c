@@ -56,7 +56,7 @@ static int atr2xml(FILE *ifp, char *file)
 	for (int i = 0; i < i1; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		indent(ofp, 3);
 		fprintf(ofp, "<u32 name=\"mArmorId\">\n");

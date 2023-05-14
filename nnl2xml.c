@@ -101,7 +101,7 @@ static int nnl2xml(FILE *ifp, char *file)
 	for (int i = 0; i < n; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_short(ifp, ofp, 3, "mNo");
 		print_short(ifp, ofp, 3, "mStageNo");

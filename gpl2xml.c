@@ -161,10 +161,10 @@ static void print_bits(FILE *ofp, int ind, int bits, const char *name, int value
 	fprintf(ofp, "<b%u name=\"%s\" value=\"%d\">\n", bits, name, value);
 }
 
-static int print_shape(FILE *ifp, FILE *ofp, int ind)
+static int print_shape(FILE *ifp, FILE *ofp, int ind, int idx)
 {
 	indent(ofp, ind);
-	fprintf(ofp, "<class>\n");
+	fprintf(ofp, "<class index=\"%d\">\n", idx);
 	int in = ind + 1;
 
 	print_string(ifp, ofp, in, "mName");
@@ -247,7 +247,7 @@ static int gpl2xml(FILE *ifp, char *file)
 		int n, j;
 
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 		print_int(ifp, ofp, 3, "mGroupClass");
 
 		n = read_int(ifp);
@@ -262,7 +262,7 @@ static int gpl2xml(FILE *ifp, char *file)
 		for (j = 0; j < n; j++)
 		{
 			indent(ofp, 4);
-			fprintf(ofp, "<class>\n");
+			fprintf(ofp, "<class index=\"%d\">\n", j);
 			print_string(ifp, ofp, 5, "name");
 			print_byte  (ifp, ofp, 5, "isBelong");
 			indent(ofp, 4);
@@ -277,7 +277,7 @@ static int gpl2xml(FILE *ifp, char *file)
 		for (j = 0; j < n; j++)
 		{
 			indent(ofp, 4);
-			fprintf(ofp, "<class>\n");
+			fprintf(ofp, "<class index=\"%d\">\n", j);
 			print_int(ifp, ofp, 5, "mLayoutID");
 			print_int(ifp, ofp, 5, "mGroup");
 			print_int(ifp, ofp, 5, "mSplitX");
@@ -319,7 +319,7 @@ static int gpl2xml(FILE *ifp, char *file)
 		fprintf(ofp, "<array name=\"mAreaHitShapeList\" count=\"%d\">\n", n);
 		for (j = 0; j < n; j++)
 		{
-			if (print_shape(ifp, ofp, 4))
+			if (print_shape(ifp, ofp, 4, j))
 			{
 				printf("Error reading: %s\n", file);
 				fclose(ofp);
@@ -355,7 +355,7 @@ static int gpl2xml(FILE *ifp, char *file)
 			fprintf(ofp, "<array count=\"%d\">\n", m);
 			for (int k = 0; k < m; k++)
 			{
-				if (print_shape(ifp, ofp, 5))
+				if (print_shape(ifp, ofp, 5, k))
 				{
 					printf("Error reading: %s\n", file);
 					fclose(ofp);
@@ -375,7 +375,7 @@ static int gpl2xml(FILE *ifp, char *file)
 		fprintf(ofp, "<array name=\"mKillAreaList\" count=\"%d\">\n", n);
 		for (j = 0; j < n; j++)
 		{
-			if (print_shape(ifp, ofp, 4))
+			if (print_shape(ifp, ofp, 4, j))
 			{
 				printf("Error reading: %s\n", file);
 				fclose(ofp);

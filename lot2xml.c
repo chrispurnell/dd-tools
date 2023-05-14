@@ -349,7 +349,7 @@ static int lot2xml(FILE *ifp, char *file)
 	for (int i = 0; i < count; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 		print_int(ifp, ofp, 3, "index");
 		int type = print_int(ifp, ofp, 3, "type");
 

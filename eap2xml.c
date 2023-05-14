@@ -143,7 +143,7 @@ static void print_flag_array(FILE *ifp, FILE *ofp, int ind, const char *name, in
 	for (int i = 0; i < count; i++)
 	{
 		indent(ofp, in);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_byte(ifp, ofp, in + 1, "FlagType");
 		print_byte(ifp, ofp, in + 1, "QuestNo");
@@ -186,7 +186,7 @@ static int eap2xml(FILE *ifp, char *file)
 	for (int i = 0; i < num; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_int(ifp, ofp, 3, "ActionStatus");
 		print_int(ifp, ofp, 3, "BaseStatus");
@@ -241,7 +241,7 @@ static int eap2xml(FILE *ifp, char *file)
 	for (int i = 0; i < snum; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_int(ifp, ofp, 3, "ActionStatus");
 		print_int(ifp, ofp, 3, "BaseStatus");

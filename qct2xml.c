@@ -79,7 +79,7 @@ static int qct2xml(FILE *ifp, char *file)
 	for (int i1 = 0; i1 < n1; i1++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i1);
 
 		int n2 = read_int(ifp);
 		indent(ofp, 3);
@@ -88,7 +88,7 @@ static int qct2xml(FILE *ifp, char *file)
 		for (int i2 = 0; i2 < n2; i2++)
 		{
 			indent(ofp, 4);
-			fprintf(ofp, "<class>\n");
+			fprintf(ofp, "<class index=\"%d\">\n", i2);
 
 			int n3 = read_int(ifp);
 			indent(ofp, 5);
@@ -97,7 +97,7 @@ static int qct2xml(FILE *ifp, char *file)
 			for (int i3 = 0; i3 < n3; i3++)
 			{
 				indent(ofp, 6);
-				fprintf(ofp, "<class>\n");
+				fprintf(ofp, "<class index=\"%d\">\n", i3);
 
 				print_int(ifp, ofp, 7, "mCommand");
 				print_int(ifp, ofp, 7, "mParam00");
@@ -119,7 +119,7 @@ static int qct2xml(FILE *ifp, char *file)
 			for (int i3 = 0; i3 < n3; i3++)
 			{
 				indent(ofp, 6);
-				fprintf(ofp, "<class>\n");
+				fprintf(ofp, "<class index=\"%d\">\n", i3);
 
 				print_int(ifp, ofp, 7, "mCommand");
 				print_int(ifp, ofp, 7, "mParam00");

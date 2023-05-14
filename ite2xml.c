@@ -102,7 +102,7 @@ static int ite2xml(FILE *ifp, char *file)
 	for (int i = 0; i < count; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_int_array(ifp, ofp, 3, "mUpParamLv1", 2);
 		print_int_array(ifp, ofp, 3, "mUpParamLv2", 4);

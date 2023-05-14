@@ -66,7 +66,7 @@ static int imx2xml(FILE *ifp, char *file)
 	for (int i = 0; i < count; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_item(ifp, ofp, 3, "mBaseItemNo0");
 		print_item(ifp, ofp, 3, "mBaseItemNo1");

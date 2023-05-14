@@ -103,7 +103,7 @@ static int amr2xml(FILE *ifp, char *file)
 	for (int i = 0; i < i1; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_int(ifp, ofp, 3, "mModelId");
 		print_int(ifp, ofp, 3, "mType");
@@ -122,7 +122,7 @@ static int amr2xml(FILE *ifp, char *file)
 	for (int i = 0; i < i2; i++)
 	{
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		print_int(ifp, ofp, 3, "mModelId");
 		print_float(ifp, ofp, 3, "mRate");

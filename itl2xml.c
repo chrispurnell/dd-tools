@@ -123,7 +123,7 @@ static int itl2xml(FILE *ifp, char *file)
 		int n;
 
 		indent(ofp, 2);
-		fprintf(ofp, "<class>\n");
+		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		indent(ofp, 3);
 		fprintf(ofp, "<i32>\n");
