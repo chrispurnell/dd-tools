@@ -34,7 +34,7 @@ static char *xml_value;
 #define XML_ERROR 1
 #define XML_EOF  -1
 
-static void xml_init()
+static void xml_init(void)
 {
 	xml_status = XML_TEXT;
 	xml_index = 0;
