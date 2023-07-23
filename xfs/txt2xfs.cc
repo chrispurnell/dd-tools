@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include <inttypes.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -196,6 +196,10 @@ bool XFS::write_xml(File *fp, xml::node *node)
 			case TYPE_U32:
 			case TYPE_S32:
 				fp->write32a(n->find_attr("value"));
+				break;
+			case TYPE_U64:
+			case TYPE_S64:
+				fp->write64a(n->find_attr("value"));
 				break;
 			case TYPE_F32:
 				fp->writefa(n->find_attr("value"));

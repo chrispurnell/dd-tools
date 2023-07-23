@@ -149,11 +149,17 @@ private:
 		void write8(uint8_t v) { fputc(v, fp); }
 		void write16(uint16_t v) { fwrite(&v, 2, 1, fp); }
 		void write32(uint32_t v) { fwrite(&v, 4, 1, fp); }
+		void write64(uint64_t v) { fwrite(&v, 8, 1, fp); }
 		void writef(float v) { fwrite(&v, 4, 1, fp); }
 
 		void write8a(xml::attribute *a) { write8(a ? a->toInt() : 0); }
 		void write16a(xml::attribute *a) { write16(a ? a->toInt() : 0); }
 		void write32a(xml::attribute *a) { write32(a ? a->toInt() : 0); }
+#if UINT64_MAX <= ULONG_MAX
+		void write64a(xml::attribute *a) { write64(a ? a->toInt() : 0); }
+#else
+		void write64a(xml::attribute *a) { write64(a ? a->toLInt() : 0); }
+#endif
 		void writefa(xml::attribute *a) { writef(a ? a->toFloat() : 0); }
 
 		void remove(const char *name)
@@ -222,6 +228,22 @@ private:
 			int32_t i;
 			memcpy(&i, data + pos, 4);
 			pos += 4;
+			return i;
+		}
+
+		uint64_t u64()
+		{
+			uint64_t i;
+			memcpy(&i, data + pos, 8);
+			pos += 8;
+			return i;
+		}
+
+		int64_t s64()
+		{
+			int64_t i;
+			memcpy(&i, data + pos, 8);
+			pos += 8;
 			return i;
 		}
 

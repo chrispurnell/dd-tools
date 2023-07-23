@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include <inttypes.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -91,6 +91,9 @@ bool XFS::build_xml(Buffer *buf, xml::node *node, unsigned index)
 			case TYPE_U32:
 				n->add_attr("value", buf->u32());
 				break;
+			case TYPE_U64:
+				n->add_attr("value", buf->u64());
+				break;
 			case TYPE_S8:
 				n->add_attr("value", buf->s8());
 				break;
@@ -99,6 +102,9 @@ bool XFS::build_xml(Buffer *buf, xml::node *node, unsigned index)
 				break;
 			case TYPE_S32:
 				n->add_attr("value", buf->s32());
+				break;
+			case TYPE_S64:
+				n->add_attr("value", buf->s64());
 				break;
 			case TYPE_F32:
 				n->add_attr("value", buf->f32());

@@ -313,6 +313,7 @@ namespace xml
 		}
 
 		long toInt() { return strtoul(m_value, NULL, 0); }
+		long long toLInt() { return strtoull(m_value, NULL, 0); }
 		float toFloat() { return strtof(m_value, NULL); }
 	};
 
@@ -366,14 +367,28 @@ namespace xml
 		void add_attr(const char *name, uint32_t value)
 		{
 			char str[16];
-			snprintf(str, 16, "%u", value);
+			snprintf(str, 16, "%" PRIu32, value);
 			attribute::new_attr(name, str, &m_attr);
 		}
 
 		void add_attr(const char *name, int32_t value)
 		{
 			char str[16];
-			snprintf(str, 16, "%d", value);
+			snprintf(str, 16, "%" PRId32, value);
+			attribute::new_attr(name, str, &m_attr);
+		}
+
+		void add_attr(const char *name, uint64_t value)
+		{
+			char str[16];
+			snprintf(str, 16, "%" PRIu64, value);
+			attribute::new_attr(name, str, &m_attr);
+		}
+
+		void add_attr(const char *name, int64_t value)
+		{
+			char str[16];
+			snprintf(str, 16, "%" PRId64, value);
 			attribute::new_attr(name, str, &m_attr);
 		}
 
