@@ -158,7 +158,7 @@ static void print_vector(FILE *ifp, FILE *ofp, int ind, const char *name)
 static void print_bits(FILE *ofp, int ind, int bits, const char *name, int value)
 {
 	indent(ofp, ind);
-	fprintf(ofp, "<b%u name=\"%s\" value=\"%d\">\n", bits, name, value);
+	fprintf(ofp, "<b%u name=\"%s\" value=\"%d\"/>\n", bits, name, value);
 }
 
 static int print_shape(FILE *ifp, FILE *ofp, int ind, int idx)
@@ -240,7 +240,7 @@ static int gpl2xml(FILE *ifp, char *file)
 	print_int(ifp, ofp, 1, "mDLCNo");
 	int count = read_int(ifp);
 	indent(ofp, 1);
-	fprintf(ofp, "<array count=\"%d\">\n", count);
+	fprintf(ofp, "<array name=\"mArray\" count=\"%d\">\n", count);
 
 	for (int i = 0; i < count; i++)
 	{
