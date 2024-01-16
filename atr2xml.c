@@ -59,7 +59,7 @@ static int atr2xml(FILE *ifp, char *file)
 		fprintf(ofp, "<class index=\"%d\">\n", i);
 
 		indent(ofp, 3);
-		fprintf(ofp, "<u32 name=\"mArmorId\">\n");
+		fprintf(ofp, "<i32 name=\"mArmorId\">\n");
 		int n = read_int(ifp);
 		indent(ofp, 4);
 		fprintf(ofp, "<b24 value=\"%d\"/>\n", (n << 8) >> 8);
