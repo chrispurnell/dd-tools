@@ -94,12 +94,54 @@ private:
 
 	struct FieldMapList {
 		uint32_t hash;
-		FieldMap *map;
+		const FieldMap *map;
 	};
 
 	static char const * const TypeNames[];
 	static const ClassMap ClassNames[];
 	static const FieldMapList FieldNames[];
+	static const XFS::FieldMap FieldMap1330451113[];
+	static const XFS::FieldMap FieldMap1605172203[];
+	static const XFS::FieldMap FieldMap1627774278[];
+	static const XFS::FieldMap FieldMap1888096271[];
+	static const XFS::FieldMap FieldMap1978005645[];
+	static const XFS::FieldMap FieldMap1579093917[];
+	static const XFS::FieldMap FieldMap1300620249[];
+	static const XFS::FieldMap FieldMap524638941[];
+	static const XFS::FieldMap FieldMap76243545[];
+	static const XFS::FieldMap FieldMap86208413[];
+	static const XFS::FieldMap FieldMap1244844019[];
+	static const XFS::FieldMap FieldMap764189656[];
+	static const XFS::FieldMap FieldMap38370575[];
+	static const XFS::FieldMap FieldMap633112065[];
+	static const XFS::FieldMap FieldMap1824796761[];
+	static const XFS::FieldMap FieldMap1993026462[];
+	static const XFS::FieldMap FieldMap721796412[];
+	static const XFS::FieldMap FieldMap131868259[];
+	static const XFS::FieldMap FieldMap2053699689[];
+	static const XFS::FieldMap FieldMap929317226[];
+	static const XFS::FieldMap FieldMap1183544139[];
+	static const XFS::FieldMap FieldMap645026908[];
+	static const XFS::FieldMap FieldMap454865959[];
+	static const XFS::FieldMap FieldMap1159273634[];
+	static const XFS::FieldMap FieldMap690919773[];
+	static const XFS::FieldMap FieldMap413936459[];
+	static const XFS::FieldMap FieldMap88772364[];
+	static const XFS::FieldMap FieldMap1170710895[];
+	static const XFS::FieldMap FieldMap397909348[];
+	static const XFS::FieldMap FieldMap836365466[];
+	static const XFS::FieldMap FieldMap658115316[];
+	static const XFS::FieldMap FieldMap654098115[];
+	static const XFS::FieldMap FieldMap454147563[];
+	static const XFS::FieldMap FieldMap1382752683[];
+	static const XFS::FieldMap FieldMap1329873997[];
+	static const XFS::FieldMap FieldMap1288888543[];
+	static const XFS::FieldMap FieldMap284185119[];
+	static const XFS::FieldMap FieldMap1828787693[];
+	static const XFS::FieldMap FieldMap796117654[];
+	static const XFS::FieldMap FieldMap1914873364[];
+	static const XFS::FieldMap FieldMap499962494[];
+	static const XFS::FieldMap FieldMap2119213033[];
 
 	struct HEADER
 	{
@@ -311,7 +353,7 @@ private:
 		{
 			if (FieldNames[i].hash == hash)
 			{
-				FieldMap *map = FieldNames[i].map;
+				const FieldMap *map = FieldNames[i].map;
 
 				for (unsigned j = 0; map[j].name; j++)
 				{
